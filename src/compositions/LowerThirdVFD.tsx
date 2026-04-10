@@ -297,18 +297,28 @@ export const LowerThirdVFD: React.FC<LowerThirdVFDProps> = ({ line1 = '', line2 
           {/* Lit dots with phosphor glow */}
           <g filter="url(#vfd-glow)">{litRects}</g>
 
-          {/* Block cursor */}
-          {cursorVisible && cursorCol < displayCols && (
-            <rect
-              x={CONFIG.padding + cursorCol * CHAR_PITCH_X}
-              y={CONFIG.padding + cursorRow * CHAR_PITCH_Y}
-              width={CHAR_W}
-              height={CHAR_H}
-              fill={CONFIG.phosphorOn}
-              opacity={0.85}
-              filter="url(#vfd-glow)"
-            />
-          )}
+          {/* Dot-matrix cursor (all 5×8 dots lit, same grid as font) */}
+          {cursorVisible && cursorCol < displayCols && (() => {
+            const baseX = CONFIG.padding + cursorCol * CHAR_PITCH_X;
+            const baseY = CONFIG.padding + cursorRow * CHAR_PITCH_Y;
+            const dots: React.ReactNode[] = [];
+            for (let dr = 0; dr < 8; dr++) {
+              for (let dc = 0; dc < 5; dc++) {
+                dots.push(
+                  <rect
+                    key={`cur-${dr}-${dc}`}
+                    x={baseX + dc * DOT_PITCH_X}
+                    y={baseY + dr * DOT_PITCH_Y}
+                    width={CONFIG.dotSize}
+                    height={CONFIG.dotSize}
+                    fill={CONFIG.phosphorOn}
+                    opacity={0.85}
+                  />,
+                );
+              }
+            }
+            return <g filter="url(#vfd-glow)">{dots}</g>;
+          })()}
         </svg>
       </div>
     </AbsoluteFill>
