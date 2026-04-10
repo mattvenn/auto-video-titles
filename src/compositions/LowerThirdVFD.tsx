@@ -265,6 +265,11 @@ export const LowerThirdVFD: React.FC<LowerThirdVFDProps> = ({ line1 = '', line2 
     }
   }
 
+  // Bezel geometry
+  const BZ = 10;                    // bezel thickness in px
+  const svgW = dispW + BZ * 2;
+  const svgH = dispH + BZ * 2;
+
   return (
     <AbsoluteFill style={{ backgroundColor: 'transparent' }}>
       <div
@@ -275,9 +280,10 @@ export const LowerThirdVFD: React.FC<LowerThirdVFDProps> = ({ line1 = '', line2 
           opacity,
           transform: `translateY(${slideY}px) perspective(600px) rotateX(8deg)`,
           transformOrigin: 'bottom left',
+          filter: 'drop-shadow(0px 10px 24px rgba(0,0,0,0.85))',
         }}
       >
-        <svg width={dispW} height={dispH} style={{ display: 'block' }}>
+        <svg width={svgW} height={svgH} style={{ display: 'block' }}>
           <defs>
             <filter id="vfd-glow" x="-60%" y="-60%" width="220%" height="220%">
               <feGaussianBlur stdDeviation="1.5" result="blur" />
@@ -288,7 +294,28 @@ export const LowerThirdVFD: React.FC<LowerThirdVFDProps> = ({ line1 = '', line2 
             </filter>
           </defs>
 
-          {/* Bezel */}
+          {/* ── Bezel body ─────────────────────────────────────────────────── */}
+          <rect width={svgW} height={svgH} fill="#0C0E0C" rx={5} />
+
+          {/* 3D bevel — highlight top + left, shadow bottom + right */}
+          <rect x={0}          y={0}          width={svgW} height={1.5} fill="rgba(255,255,255,0.13)" rx={5} />
+          <rect x={0}          y={0}          width={1.5}  height={svgH} fill="rgba(255,255,255,0.08)" />
+          <rect x={0}          y={svgH - 1.5} width={svgW} height={1.5} fill="rgba(0,0,0,0.55)" rx={0} />
+          <rect x={svgW - 1.5} y={0}          width={1.5}  height={svgH} fill="rgba(0,0,0,0.45)" />
+
+          {/* Inner groove around the VFD panel */}
+          <rect
+            x={BZ - 2} y={BZ - 2}
+            width={dispW + 4} height={dispH + 4}
+            fill="none"
+            stroke="rgba(0,0,0,0.65)"
+            strokeWidth={2}
+            rx={4}
+          />
+
+          {/* ── VFD panel (all content offset by bezel width) ──────────────── */}
+          <g transform={`translate(${BZ}, ${BZ})`}>
+          {/* Display background */}
           <rect width={dispW} height={dispH} fill={CONFIG.bg} rx={3} />
 
           {/* Unlit dot grid (near-invisible) */}
@@ -319,6 +346,7 @@ export const LowerThirdVFD: React.FC<LowerThirdVFDProps> = ({ line1 = '', line2 
             }
             return <g filter="url(#vfd-glow)">{dots}</g>;
           })()}
+          </g>{/* end VFD panel group */}
         </svg>
       </div>
     </AbsoluteFill>
