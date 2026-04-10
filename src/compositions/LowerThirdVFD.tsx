@@ -107,16 +107,17 @@ const FALLBACK_GLYPH: readonly number[] = [
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const CONFIG = {
-  dotSize: 2,       // rendered dot width/height in px
-  dotGapX: 1,       // gap between dot columns within a character
-  dotGapY: 1,       // gap between dot rows within a character
-  charGap: 3,       // gap between adjacent characters
-  rowGap: 6,        // gap between the two display rows
+  dotSize: 4,       // rendered dot width/height in px
+  dotGapX: 2,       // gap between dot columns within a character
+  dotGapY: 2,       // gap between dot rows within a character
+  charGap: 8,       // gap between adjacent characters
+  rowGap: 7,        // gap between the two display rows
   padding: 10,      // inner bezel padding
 
-  phosphorOn: '#00FFB2',
+  phosphorOn: '#A78DC7',
   phosphorOffOpacity: 0.05,
-  bg: '#001A00',
+  glowRadius: 4.5,   // feGaussianBlur stdDeviation — try 3 for halo, 5 for bloom
+  bg: '#000818',
 
   entryFrames: 8,
   holdFrames: 90,
@@ -286,7 +287,7 @@ export const LowerThirdVFD: React.FC<LowerThirdVFDProps> = ({ line1 = '', line2 
         <svg width={svgW} height={svgH} style={{ display: 'block' }}>
           <defs>
             <filter id="vfd-glow" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="1.5" result="blur" />
+              <feGaussianBlur stdDeviation={CONFIG.glowRadius} result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
@@ -295,7 +296,7 @@ export const LowerThirdVFD: React.FC<LowerThirdVFDProps> = ({ line1 = '', line2 
           </defs>
 
           {/* ── Bezel body ─────────────────────────────────────────────────── */}
-          <rect width={svgW} height={svgH} fill="#0C0E0C" rx={5} />
+          <rect width={svgW} height={svgH} fill="#060A12" rx={5} />
 
           {/* 3D bevel — highlight top + left, shadow bottom + right */}
           <rect x={0}          y={0}          width={svgW} height={1.5} fill="rgba(255,255,255,0.13)" rx={5} />
