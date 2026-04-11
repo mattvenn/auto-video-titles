@@ -3,7 +3,9 @@
 #
 # Edit line1 / line2 freely. At current dot size (~4px) keep lines under ~20 chars.
 # timecode: HH:MM:SS.mmm  (matches SRT source timestamps)
-# duration_s: how long the card is visible on screen
+# composition: override per card; defaults to config.composition
+#   LowerThirdVFD           — 2-line bug (line1, line2)
+#   LowerThirdCallToAction  — 3-line panel (header, line1, line2)
 # enabled: set to false to skip a card without deleting it
 
 [config]
@@ -21,7 +23,6 @@ section    = "Intro"
 line1      = "Matt Venn"
 line2      = "Zero to ASIC Course"
 timecode   = "01:00:03.766"
-duration_s = 5.0
 enabled    = true
 notes      = "Opening — show as Matt begins speaking"
 

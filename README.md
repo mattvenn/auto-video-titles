@@ -19,7 +19,7 @@ npm install
 
 ### 1. Edit card definitions
 
-Open `titles.toml` and set `line1`, `line2`, `timecode`, and `duration_s` for each card. The timecode is the SRT-style timestamp (`HH:MM:SS.mmm`) where the card should appear on the timeline.
+Open the TOML file for your part (e.g. `part1.toml`, `part2.toml`) and set `line1`, `line2`, `timecode` for each card. The timecode is the SRT-style timestamp (`HH:MM:SS.mmm`) where the card should appear on the timeline.
 
 ### 2. Preview in Remotion Studio
 
@@ -34,13 +34,13 @@ Opens the Remotion Studio with hot-reload. Select `LowerThirdVFD` from the compo
 Render all enabled cards:
 
 ```
-python render_titles.py
+python3 render_titles.py
 ```
 
 Render a single card by id:
 
 ```
-python render_titles.py --card drc
+python3 render_titles.py --card drc
 ```
 
 Each card renders to `out/titles/<card-id>/element-NNN.png` — a transparent PNG sequence.
@@ -52,19 +52,19 @@ Resolve must be running with a timeline open.
 **First run** — renders (if needed), imports into the `remotion` media pool bin, and places on a new track:
 
 ```
-python render_titles.py --resolve
+python3 render_titles.py --resolve
 ```
 
 **Re-use existing renders** — skips rendering, imports and places:
 
 ```
-python render_titles.py --no-render --resolve
+python3 render_titles.py --no-render --resolve
 ```
 
 **Re-place from bin** — clips already imported; just add a new track and place them:
 
 ```
-python render_titles.py --place-only
+python3 render_titles.py --place-only
 ```
 
 All three modes add a new video track named `remotion` and place clips at their configured timecodes. `recordFrame` is absolute (from `00:00:00:00`), so clips land at the correct position regardless of timeline start timecode.
@@ -72,7 +72,7 @@ All three modes add a new video track named `remotion` and place clips at their 
 ## File layout
 
 ```
-titles.toml          — card definitions and config
+part1.toml           — card definitions for part 1 (copy for each new part)
 render_titles.py     — render + Resolve insertion script
 render_frames.mjs    — Remotion Node API: renders PNG frames for one composition
 Makefile             — studio / render-all / render-card targets
@@ -80,10 +80,10 @@ src/
   index.ts           — Remotion entry point
   Root.tsx           — composition registry
   compositions/
-    LowerThirdVFD.tsx — the animated lower-third component
-    TitleCard.tsx
+    LowerThirdVFD.tsx          — 2-line lower-third bug
+    LowerThirdCallToAction.tsx — 3-line call to action panel
     MyComp.tsx
-out/titles/          — rendered PNG sequences (git-ignored)
+out/                 — rendered PNG sequences (git-ignored)
 ```
 
 ## Resolve scripting setup

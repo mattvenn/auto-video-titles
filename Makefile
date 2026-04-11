@@ -1,4 +1,4 @@
-COMPOSITIONS := MyComp LowerThirdVFD
+COMPOSITIONS := MyComp LowerThirdVFD LowerThirdCallToAction
 
 .PHONY: render-all render-card studio clean
 
@@ -18,4 +18,4 @@ clean:
 
 render-card:
 	mkdir -p $(OUT)
-	node render_frames.mjs --out=$(OUT) --props=$(PROPS_FILE)
+	node render_frames.mjs --out=$(OUT) --props=$(PROPS_FILE) --composition=$(COMPOSITION)

@@ -64,15 +64,22 @@ def render_card(card: dict, config: dict, out_dir: Path) -> Path:
     label   = f"[{section}] " if section else ""
     print(f"  → {label}{card_id}  |  {card['line1']} / {card['line2']}")
 
+    composition = card.get("composition", config["composition"])
+
+    # Build props from whichever fields the card defines
+    props: dict = {}
+    for key in ("header", "line1", "line2"):
+        if key in card:
+            props[key] = card[key]
+
     # Write props to a temp file so make doesn't have to deal with JSON quoting
-    props = {"line1": card["line1"], "line2": card["line2"]}
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         json.dump(props, f)
         props_file = f.name
 
     try:
         result = subprocess.run(
-            ["make", "render-card", f"OUT={out_path}", f"PROPS_FILE={props_file}"],
+            ["make", "render-card", f"OUT={out_path}", f"PROPS_FILE={props_file}", f"COMPOSITION={composition}"],
             capture_output=False,
         )
     finally:
@@ -149,10 +156,12 @@ def insert_into_resolve(cards: list[dict], config: dict, out_dir: Path):
             paths.append((card, out_path))
 
     media_items: dict[str, object] = {}
+    frame_counts: dict[str, int] = {}
     for card, out_path in paths:
         png_files = sorted(out_path.glob("*.png"))
         items = media_pool.ImportMedia([str(f.resolve()) for f in png_files])
         if items:
+            frame_counts[card["id"]] = len(png_files)
             print(f"  imported  {card['id']}  → {len(items)} item(s) from {len(png_files)} frames")
             media_items[card["id"]] = items[0]
         else:
@@ -175,9 +184,9 @@ def insert_into_resolve(cards: list[dict], config: dict, out_dir: Path):
             continue
 
         record_frame    = timecode_to_frames(card["timecode"], timeline_fps)
-        duration_frames = round(card["duration_s"] * fps)
+        duration_frames = frame_counts[card["id"]]
 
-        print(f"  {card['id']:<16}  {card['timecode']}  →  recordFrame {record_frame}")
+        print(f"  {card['id']:<16}  {card['timecode']}  →  recordFrame {record_frame}  dur={duration_frames}f")
 
         clip_infos.append({
             "mediaPoolItem": mpi,
@@ -233,6 +242,8 @@ def place_from_bin(cards: list[dict], config: dict):
     timeline_fps = round(float(project.GetSetting("timelineFrameRate")))
     print(f"Timeline '{timeline.GetName()}'  fps={timeline_fps}  target=V{track_index}")
 
+    out_dir = Path(config["output_dir"])
+
     clip_infos: list[dict] = []
     for card in cards:
         mpi = bin_clips.get(card["id"])
@@ -240,8 +251,13 @@ def place_from_bin(cards: list[dict], config: dict):
             print(f"  SKIP {card['id']} — not found in bin")
             continue
 
+        png_files = sorted((out_dir / card["id"]).glob("*.png"))
+        if not png_files:
+            print(f"  SKIP {card['id']} — no PNG frames found in {out_dir / card['id']}")
+            continue
+
         record_frame    = timecode_to_frames(card["timecode"], timeline_fps)
-        duration_frames = round(card["duration_s"] * fps)
+        duration_frames = len(png_files)
 
         print(f"  {card['id']:<16}  {card['timecode']}  →  recordFrame {record_frame}  dur={duration_frames}f")
         clip_infos.append({
@@ -267,7 +283,7 @@ def place_from_bin(cards: list[dict], config: dict):
 
 def main():
     parser = argparse.ArgumentParser(description="Render VFD title cards via Remotion")
-    parser.add_argument("--config",     default="titles.toml", help="Path to titles.toml")
+    parser.add_argument("--config",     default="part1.toml", help="Path to the titles TOML file (e.g. part1.toml, part2.toml)")
     parser.add_argument("--card",       default=None,          help="Render only this card id")
     parser.add_argument("--resolve",    action="store_true",   help="Import clips into Resolve media pool and insert into timeline")
     parser.add_argument("--place-only", action="store_true",   help="Place clips already in the 'remotion' bin onto the active timeline")

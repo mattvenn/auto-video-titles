@@ -25,13 +25,14 @@ const args = Object.fromEntries(
     .map(a => { const [k, ...v] = a.slice(2).split('='); return [k, v.join('=')]; })
 );
 
-if (!args.out || !args.props) {
-  console.error('Usage: node render_frames.mjs --out=<dir> --props=<file.json>');
+if (!args.out || !args.props || !args.composition) {
+  console.error('Usage: node render_frames.mjs --out=<dir> --props=<file.json> --composition=<id>');
   process.exit(1);
 }
 
-const outDir   = path.resolve(args.out);
-const props    = JSON.parse(fs.readFileSync(args.props, 'utf8'));
+const outDir      = path.resolve(args.out);
+const props       = JSON.parse(fs.readFileSync(args.props, 'utf8'));
+const composition = args.composition;
 
 fs.mkdirSync(outDir, { recursive: true });
 
@@ -41,9 +42,9 @@ const bundleDir = await bundle({
 });
 
 const compositions = await getCompositions(bundleDir, { inputProps: props });
-const comp = compositions.find(c => c.id === 'LowerThirdVFD');
+const comp = compositions.find(c => c.id === composition);
 if (!comp) {
-  console.error('Composition LowerThirdVFD not found');
+  console.error(`Composition '${composition}' not found`);
   process.exit(1);
 }
 
