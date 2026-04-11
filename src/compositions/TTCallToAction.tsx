@@ -1,0 +1,191 @@
+import React from 'react';
+import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
+
+// ── Config ────────────────────────────────────────────────────────────────────
+const CONFIG = {
+  // Layout — fills full screen width, 2× scale
+  logoH:   260,
+  logoW:   260,
+  stripH:  220,  // logo pokes ~20px above and below
+  // 1920 - left(60) - logo(260) - right margin(40) = 1560
+  stripW:  1560,
+
+  // Colors
+  stripColor: '#fef244',
+  textColor:  '#040371',
+  line1Color: '#040371',
+  line2Color: '#f82381',
+
+  // Typography
+  headerSize:  68,
+  line1Size:   40,
+  line2Size:   32,
+  fontFamily:  '"Montserrat", "Arial Black", Arial, sans-serif',
+  textPadding: 40,
+  lineGap:     10,
+
+  // Position on screen
+  bottom: 60,
+  left:   60,
+
+  // Timing (frames @ 30 fps)
+  popStart:        5,
+  slideStart:      22,
+  holdEnd:         202,
+  exitSlideFrames: 40,  // enough frames for the spring to settle
+  exitPopFrames:   8,
+
+  // Spring feel
+  popDamping:     14,
+  popStiffness:   300,
+  slideDamping:     18,
+  slideStiffness:   140,
+  exitSlideDamping: 30,  // overdamped (>24) — no oscillation on exit
+};
+
+export const TT_CTA_DURATION = CONFIG.holdEnd + CONFIG.exitSlideFrames + CONFIG.exitPopFrames;
+
+export type TTCallToActionProps = {
+  header?: string;
+  line1?:  string;
+  line2?:  string;
+};
+
+export const TTCallToAction: React.FC<TTCallToActionProps> = ({
+  header = 'Header',
+  line1  = 'Line one',
+  line2  = 'Line two',
+}) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const exitSlideEnd = CONFIG.holdEnd + CONFIG.exitSlideFrames;
+
+  // ── Logo X position ───────────────────────────────────────────────────────
+  const logoXEntry = spring({
+    frame: frame - CONFIG.slideStart,
+    fps,
+    config: { damping: CONFIG.slideDamping, stiffness: CONFIG.slideStiffness },
+    from: 0, to: CONFIG.stripW,
+  });
+  const logoXExit = spring({
+    frame: frame - CONFIG.holdEnd,
+    fps,
+    config: { damping: CONFIG.exitSlideDamping, stiffness: CONFIG.slideStiffness },
+    from: CONFIG.stripW, to: 0,
+  });
+  const logoX = frame < CONFIG.holdEnd ? logoXEntry : Math.max(0, logoXExit);
+
+  // ── Logo scale + opacity ──────────────────────────────────────────────────
+  const logoScaleEntry = spring({
+    frame: frame - CONFIG.popStart,
+    fps,
+    config: { damping: CONFIG.popDamping, stiffness: CONFIG.popStiffness },
+    from: 0, to: 1,
+  });
+  const logoScaleExit = interpolate(
+    frame,
+    [exitSlideEnd, exitSlideEnd + CONFIG.exitPopFrames],
+    [1, 1.6],
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
+  );
+  const logoOpacity = interpolate(
+    frame,
+    [exitSlideEnd, exitSlideEnd + CONFIG.exitPopFrames],
+    [1, 0],
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
+  );
+  const logoScale = frame < exitSlideEnd ? logoScaleEntry : logoScaleExit;
+
+  const stripTop = (CONFIG.logoH - CONFIG.stripH) / 2;
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: 'transparent' }}>
+      <div
+        style={{
+          position: 'absolute',
+          bottom:   CONFIG.bottom,
+          left:     CONFIG.left,
+          height:   CONFIG.logoH,
+        }}
+      >
+        {/* ── Strip ──────────────────────────────────────────────────────── */}
+        <div
+          style={{
+            position:        'absolute',
+            top:             stripTop,
+            left:            0,
+            width:           Math.max(0, logoX),
+            height:          CONFIG.stripH,
+            backgroundColor: CONFIG.stripColor,
+            boxShadow:       '0 6px 24px rgba(0,0,0,0.28), 0 2px 6px rgba(0,0,0,0.18)',
+            overflow:        'hidden',
+          }}
+        >
+          <div
+            style={{
+              paddingLeft:    CONFIG.textPadding,
+              paddingRight:   CONFIG.textPadding,
+              height:         '100%',
+              display:        'flex',
+              flexDirection:  'column',
+              justifyContent: 'center',
+              gap:            CONFIG.lineGap,
+            }}
+          >
+            <div style={{
+              fontFamily: CONFIG.fontFamily,
+              fontWeight: 800,
+              fontSize:   CONFIG.headerSize,
+              color:      CONFIG.textColor,
+              lineHeight: 1.0,
+              whiteSpace: 'nowrap',
+            }}>
+              {header}
+            </div>
+            <div style={{
+              fontFamily: CONFIG.fontFamily,
+              fontWeight: 600,
+              fontSize:   CONFIG.line1Size,
+              color:      CONFIG.line1Color,
+              lineHeight: 1.1,
+              whiteSpace: 'nowrap',
+            }}>
+              {line1}
+            </div>
+            <div style={{
+              fontFamily: CONFIG.fontFamily,
+              fontWeight: 600,
+              fontSize:   CONFIG.line2Size,
+              color:      CONFIG.line2Color,
+              lineHeight: 1.1,
+              whiteSpace: 'nowrap',
+            }}>
+              {line2}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Logo ───────────────────────────────────────────────────────── */}
+        <div
+          style={{
+            position:        'absolute',
+            top:             0,
+            left:            logoX,
+            width:           CONFIG.logoW,
+            height:          CONFIG.logoH,
+            opacity:         logoOpacity,
+            transform:       `scale(${logoScale})`,
+            transformOrigin: 'center center',
+            filter:          'drop-shadow(0 8px 24px rgba(0,0,0,0.45)) drop-shadow(0 2px 6px rgba(0,0,0,0.25))',
+          }}
+        >
+          <Img
+            src={staticFile('tt_logo.png')}
+            style={{ width: CONFIG.logoW, height: CONFIG.logoH, display: 'block' }}
+          />
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};

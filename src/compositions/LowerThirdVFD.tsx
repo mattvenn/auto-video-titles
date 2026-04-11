@@ -11,7 +11,7 @@ const CONFIG = {
   rowGap: 7,        // gap between the two display rows
   padding: 10,      // inner bezel padding
 
-  phosphorOn: '#A78DC7',
+  phosphorOn: '#0065FF',
   phosphorOffOpacity: 0.05,
   glowRadius: 4.5,   // feGaussianBlur stdDeviation — try 3 for halo, 5 for bloom
   bg: '#000818',

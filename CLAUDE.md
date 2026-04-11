@@ -125,7 +125,10 @@ make render-all  # render every composition to out/<Name>.mov (ProRes 4444)
 | id | file | duration | purpose |
 |----|------|----------|---------|
 | `MyComp` | `MyComp.tsx` | 150 f | placeholder / hello world |
-| `LowerThirdVFD` | `LowerThirdVFD.tsx` | 330 f | lower-left bug: green PCB board with IC chip + 2-line VFD dot-matrix display; text types in then deletes |
+| `LowerThirdVFD` | `LowerThirdVFD.tsx` | dynamic | Zero to ASIC: lower-left VFD dot-matrix bug, 2 lines, types in then deletes |
+| `LowerThirdCallToAction` | `LowerThirdCallToAction.tsx` | dynamic | Zero to ASIC: VFD 3-line CTA panel |
+| `TTLowerThird` | `TTLowerThird.tsx` | ~212 f | Tiny Tapeout: logo pops in, slides right revealing strip + 2-line text (name, title) |
+| `TTCallToAction` | `TTCallToAction.tsx` | ~254 f | Tiny Tapeout: full-width CTA, 3-line text (header, line1, line2) |
 
 ## Design conventions
 

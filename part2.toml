@@ -1,99 +1,99 @@
-# VFD Lower-Third Title Cards
+# Tiny Tapeout Lower-Third Title Cards
 # "Part 2 - Welcome to the Fab" — Zero to ASIC Course
 #
 # timecode: HH:MM:SS.mmm  (matches SRT source timestamps)
 # composition: override per card; defaults to config.composition
-#   LowerThirdVFD           — 2-line bug (line1, line2)
-#   LowerThirdCallToAction  — 3-line panel (header, line1, line2)
+#   TTLowerThird    — 2-line branded card (name, title)
+#   TTCallToAction  — 3-line branded CTA  (header, line1, line2)
 # enabled: set to false to skip a card without deleting it
 
 [config]
 srt_file        = "part 2 - welcome to the fab copy.srt"
 output_dir      = "out/part2"
-composition     = "LowerThirdVFD"
+composition     = "TTLowerThird"
 fps             = 30
 timeline_offset = "00:00:00.000"
 
 # ── Section 1: The fab & its tools ───────────────────────────────────────────
 
 [[cards]]
-id         = "ihp"
-section    = "Intro"
-line1      = "IHP"
-line2      = "Frankfurt Oder, DE"
-timecode   = "01:00:16.487"
-enabled    = false
-notes      = "Context card for the fab visit. Disabled — very early (13s in) and PDK card follows only 12s later. Enable if the opener needs grounding."
+id      = "ihp"
+section = "Intro"
+name    = "IHP"
+title   = "Frankfurt Oder, DE"
+timecode = "01:00:16.487"
+enabled = false
+notes   = "Context card for the fab visit. Disabled — very early (13s in) and PDK card follows only 12s later. Enable if the opener needs grounding."
 
 [[cards]]
-id         = "pdk"
-section    = "Intro"
-line1      = "Process Design Kit"
-line2      = "PDK"
-timecode   = "01:00:28.166"
-enabled    = true
-notes      = "First major term, explicitly defined in script. Good anchor for the whole section."
+id      = "pdk"
+section = "Intro"
+name    = "Process Design Kit"
+title   = "PDK"
+timecode = "01:00:28.166"
+enabled = true
+notes   = "First major term, explicitly defined in script. Good anchor for the whole section."
 
 # ── Section 2: From design to mask ───────────────────────────────────────────
 
 [[cards]]
-id         = "gds_libralane"
-section    = "Layout"
-line1      = "GDS File"
-line2      = "LibraLane"
-timecode   = "01:01:22.804"
-enabled    = false
-notes      = "GDS and LibraLane introduced together. Disabled — only 17s before the photo mask card. Enable one or the other, not both."
+id      = "gds_libralane"
+section = "Layout"
+name    = "GDS File"
+title   = "LibraLane"
+timecode = "01:01:22.804"
+enabled = false
+notes   = "GDS and LibraLane introduced together. Disabled — only 17s before the photo mask card. Enable one or the other, not both."
 
 [[cards]]
-id         = "photo_mask"
-section    = "Layout"
-line1      = "Photo Mask"
-line2      = "Lithography Stencil"
-timecode   = "01:01:40.113"
-enabled    = true
-notes      = "Clear new visual section. Central to the fab process story. ~1m12s after PDK card."
+id      = "photo_mask"
+section = "Layout"
+name    = "Photo Mask"
+title   = "Lithography Stencil"
+timecode = "01:01:40.113"
+enabled = true
+notes   = "Clear new visual section. Central to the fab process story. ~1m12s after PDK card."
 
 # ── Section 3: Wafers & the clean room ───────────────────────────────────────
 
 [[cards]]
-id         = "silicon_wafer"
-section    = "Materials"
-line1      = "Silicon Wafer"
-line2      = "Chip Substrate"
-timecode   = "01:02:23.322"
-enabled    = false
-notes      = "Natural section start but only ~43s after photo mask card. Enable if mask card is disabled, or if spacing feels too tight."
+id      = "silicon_wafer"
+section = "Materials"
+name    = "Silicon Wafer"
+title   = "Chip Substrate"
+timecode = "01:02:23.322"
+enabled = false
+notes   = "Natural section start but only ~43s after photo mask card. Enable if mask card is disabled, or if spacing feels too tight."
 
 [[cards]]
-id         = "clean_room"
-section    = "Fab Tour"
-line1      = "Clean Room"
-line2      = "Class 4 Environment"
-timecode   = "01:03:11.662"
-enabled    = true
-notes      = "Clear location shift and new topic. ~1m31s after photo mask card."
+id      = "clean_room"
+section = "Fab Tour"
+name    = "Clean Room"
+title   = "Class 4 Environment"
+timecode = "01:03:11.662"
+enabled = true
+notes   = "Clear location shift and new topic. ~1m31s after photo mask card."
 
 # ── Section 4: Silicon physics ────────────────────────────────────────────────
 
 [[cards]]
-id         = "transistor"
-section    = "Physics"
-line1      = "Transistor"
-line2      = "Field Effect Switch"
-timecode   = "01:04:15.101"
-enabled    = false
-notes      = "Key concept, but only 22s before the CTA card. Enable if CTA is removed or pushed later. Could be a strong standalone card if the episode is longer."
+id      = "transistor"
+section = "Physics"
+name    = "Transistor"
+title   = "Field Effect Switch"
+timecode = "01:04:15.101"
+enabled = false
+notes   = "Key concept, but only 22s before the CTA card. Enable if CTA is removed or pushed later."
 
 # ── Call to action ────────────────────────────────────────────────────────────
 
 [[cards]]
 id          = "cta_3d_viewer"
 section     = "Outro"
-composition = "LowerThirdCallToAction"
+composition = "TTCallToAction"
 header      = "Try the 3D Viewer"
 line1       = "zerotoasic.com"
 line2       = "Link in description"
 timecode    = "01:04:37.081"
 enabled     = true
-notes       = "Script explicitly says 'visit your design on the website and launch the 3D viewer'. Natural end-of-video CTA. Confirm the URL is correct."
+notes       = "Script explicitly says 'visit your design on the website and launch the 3D viewer'. Confirm the URL is correct."

@@ -3,6 +3,8 @@ import { Composition } from 'remotion';
 import { MyComp } from './compositions/MyComp';
 import { LowerThirdVFD, getDuration, LowerThirdVFDProps } from './compositions/LowerThirdVFD';
 import { LowerThirdCallToAction, getDuration as getCtaDuration, LowerThirdCallToActionProps } from './compositions/LowerThirdCallToAction';
+import { TTLowerThird, TT_DURATION } from './compositions/TTLowerThird';
+import { TTCallToAction, TT_CTA_DURATION } from './compositions/TTCallToAction';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -43,6 +45,31 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={({ props }: { props: LowerThirdCallToActionProps }) => ({
           durationInFrames: getCtaDuration(props.header ?? '', props.line1 ?? '', props.line2 ?? '', 30),
         })}
+      />
+      <Composition
+        id="TTLowerThird"
+        component={TTLowerThird}
+        durationInFrames={TT_DURATION}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{
+          name:  'Matt Venn',
+          title: 'Tiny Tapeout',
+        }}
+      />
+      <Composition
+        id="TTCallToAction"
+        component={TTCallToAction}
+        durationInFrames={TT_CTA_DURATION}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{
+          header: 'Try Tiny Tapeout',
+          line1:  'tinytapeout.com',
+          line2:  'Link in description',
+        }}
       />
     </>
   );
