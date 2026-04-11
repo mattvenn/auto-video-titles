@@ -1,0 +1,128 @@
+# VFD Lower-Third Title Cards
+# "Part 1 - You Submitted!" — Zero to ASIC Course
+#
+# Edit line1 / line2 freely. At current dot size (~4px) keep lines under ~20 chars.
+# timecode: HH:MM:SS.mmm  (matches SRT source timestamps)
+# duration_s: how long the card is visible on screen
+# enabled: set to false to skip a card without deleting it
+
+[config]
+srt_file        = "part 1 - you submitted!.srt"
+output_dir      = "out/titles"
+composition     = "LowerThirdVFD"
+fps             = 30
+timeline_offset = "00:00:00.000"  # SRT and Resolve timeline both start at 01:00:00, so offset cancels out
+
+# ── Presenter / channel ───────────────────────────────────────────────────────
+
+[[cards]]
+id         = "presenter"
+section    = "Intro"
+line1      = "Matt Venn"
+line2      = "Zero to ASIC Course"
+timecode   = "01:00:03.766"
+duration_s = 5.0
+enabled    = true
+notes      = "Opening — show as Matt begins speaking"
+
+# ── Key technical terms ───────────────────────────────────────────────────────
+
+[[cards]]
+id         = "precheck"
+section    = "Submission"
+line1      = "Pre-Check"
+line2      = "GitHub Actions CI"
+timecode   = "01:00:53.232"
+duration_s = 4.0
+enabled    = true
+notes      = "When pre-check and GitHub actions are introduced"
+
+[[cards]]
+id         = "drc"
+section    = "Submission"
+line1      = "Design Rule Check"
+line2      = "DRC"
+timecode   = "01:01:08.748"
+duration_s = 4.5
+enabled    = true
+notes      = "DRC definition — foundry manufacturability rules"
+
+[[cards]]
+id         = "pull_request"
+section    = "Submission"
+line1      = "Pull Request"
+line2      = "Submission Process"
+timecode   = "01:01:20.551"
+duration_s = 4.0
+enabled    = true
+notes      = "Explaining what a PR means in this context"
+
+[[cards]]
+id         = "metal_fill"
+section    = "Layout"
+line1      = "Metal Fill"
+line2      = "Density Control"
+timecode   = "01:01:57.588"
+duration_s = 4.0
+enabled    = true
+notes      = "Fill squares added to balance wafer density"
+
+[[cards]]
+id         = "mux"
+section    = "Architecture"
+line1      = "Multiplexer"
+line2      = "MUX"
+timecode   = "01:02:19.861"
+duration_s = 4.5
+enabled    = true
+notes      = "MUX switchboard explained"
+
+[[cards]]
+id         = "power_switch"
+section    = "Architecture"
+line1      = "Power Switch"
+line2      = "Per-Design Isolation"
+timecode   = "01:02:37.003"
+duration_s = 4.0
+enabled    = true
+notes      = "Each design has its own power switch"
+
+[[cards]]
+id         = "rom"
+section    = "Architecture"
+line1      = "Read-Only Memory"
+line2      = "ROM"
+timecode   = "01:03:25.843"
+duration_s = 4.0
+enabled    = true
+notes      = "ROM stores chip name and git commit"
+
+[[cards]]
+id         = "mpw"
+section    = "Manufacturing"
+line1      = "Multi-Project Wafer"
+line2      = "MPW"
+timecode   = "01:04:17.645"
+duration_s = 4.5
+enabled    = true
+notes      = "MPW — cost-sharing across many chips on one wafer"
+
+[[cards]]
+id         = "ihp_130nm"
+section    = "Manufacturing"
+line1      = "IHP 130nm Process"
+line2      = "Process Node"
+timecode   = "01:04:49.719"
+duration_s = 4.0
+enabled    = true
+notes      = "IHP factory — 130nm semiconductor process"
+
+[[cards]]
+id         = "intermediary"
+section    = "Manufacturing"
+line1      = "Chip Foundry"
+line2      = "MPW Intermediary"
+timecode   = "01:05:01.063"
+duration_s = 4.0
+enabled    = true
+notes      = "Companies that aggregate designs before sending to fab"
