@@ -17,6 +17,15 @@ timeline_offset = "00:00:00.000"
 # ── Section 1: The fab & its tools ───────────────────────────────────────────
 
 [[cards]]
+id      = "intro"
+section = "Intro"
+name    = "Part 2"
+title   = "Welcome to the fab!"
+timecode = "01:00:01.21"
+enabled = true
+notes   = "intro card"
+
+[[cards]]
 id      = "ihp"
 section = "Intro"
 name    = "IHP"
@@ -28,10 +37,10 @@ notes   = "Context card for the fab visit. Disabled — very early (13s in) and 
 [[cards]]
 id      = "pdk"
 section = "Intro"
-name    = "Process Design Kit"
-title   = "PDK"
-timecode = "01:00:28.166"
-enabled = true
+name   = "PDK"
+title    = "Process Design Kit"
+timecode = "01:00:26.166"
+enabled = false
 notes   = "First major term, explicitly defined in script. Good anchor for the whole section."
 
 # ── Section 2: From design to mask ───────────────────────────────────────────
@@ -92,8 +101,9 @@ id          = "cta_3d_viewer"
 section     = "Outro"
 composition = "TTCallToAction"
 header      = "Try the 3D Viewer"
-line1       = "zerotoasic.com"
-line2       = "Link in description"
-timecode    = "01:04:37.081"
+line1       = "➡️ tinytapeout.com/chips"
+line2       = "Find your design, then click 'Open in 3D viewer'"
+timecode    = "01:04:33.081"
+hold_frames = 142
 enabled     = true
-notes       = "Script explicitly says 'visit your design on the website and launch the 3D viewer'. Confirm the URL is correct."
+notes       = "Script explicitly says 'visit your design on the website and launch the 3D viewer'. hold_frames=142 (default 172) trims ~1s off the hold."

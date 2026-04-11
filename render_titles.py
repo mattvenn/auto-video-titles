@@ -72,6 +72,8 @@ def render_card(card: dict, config: dict, out_dir: Path) -> Path:
     for key in ("name", "title", "header", "line1", "line2"):
         if key in card:
             props[key] = card[key]
+    if "hold_frames" in card:
+        props["holdEnd"] = card["hold_frames"]
 
     # Write props to a temp file so make doesn't have to deal with JSON quoting
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:

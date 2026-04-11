@@ -1,10 +1,10 @@
 import React from 'react';
-import { Composition } from 'remotion';
+import { CalculateMetadataFunction, Composition } from 'remotion';
 import { MyComp } from './compositions/MyComp';
 import { LowerThirdVFD, getDuration, LowerThirdVFDProps } from './compositions/LowerThirdVFD';
 import { LowerThirdCallToAction, getDuration as getCtaDuration, LowerThirdCallToActionProps } from './compositions/LowerThirdCallToAction';
-import { TTLowerThird, TT_DURATION } from './compositions/TTLowerThird';
-import { TTCallToAction, TT_CTA_DURATION } from './compositions/TTCallToAction';
+import { TTLowerThird, TTLowerThirdProps, calculateMetadata as calcTTLowerThird } from './compositions/TTLowerThird';
+import { TTCallToAction, TTCallToActionProps, calculateMetadata as calcTTCallToAction } from './compositions/TTCallToAction';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -49,7 +49,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="TTLowerThird"
         component={TTLowerThird}
-        durationInFrames={TT_DURATION}
+        calculateMetadata={calcTTLowerThird as CalculateMetadataFunction<TTLowerThirdProps>}
         fps={30}
         width={1920}
         height={1080}
@@ -61,7 +61,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="TTCallToAction"
         component={TTCallToAction}
-        durationInFrames={TT_CTA_DURATION}
+        calculateMetadata={calcTTCallToAction as CalculateMetadataFunction<TTCallToActionProps>}
         fps={30}
         width={1920}
         height={1080}

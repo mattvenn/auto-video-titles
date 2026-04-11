@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, CalculateMetadataFunction, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const CONFIG = {
@@ -39,13 +39,16 @@ const CONFIG = {
   exitSlideDamping: 30,  // overdamped (>24) — no oscillation on exit
 };
 
-export const TT_DURATION = CONFIG.holdEnd + CONFIG.exitSlideFrames + CONFIG.exitPopFrames;
+export type TTLowerThirdProps = { name?: string; title?: string; holdEnd?: number };
 
-export type TTLowerThirdProps = { name?: string; title?: string };
+export const calculateMetadata: CalculateMetadataFunction<TTLowerThirdProps> = ({ props }) => ({
+  durationInFrames: (props.holdEnd ?? CONFIG.holdEnd) + CONFIG.exitSlideFrames + CONFIG.exitPopFrames,
+});
 
 export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
-  name  = 'Name',
-  title = 'Title',
+  name    = 'Name',
+  title   = 'Title',
+  holdEnd = CONFIG.holdEnd,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -54,7 +57,7 @@ export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
   const longestChars = Math.max(name.length * CONFIG.nameSize, title.length * CONFIG.titleSize);
   const stripW = Math.round(longestChars * 0.62) + CONFIG.textPadding * 2 + 20;
 
-  const exitSlideEnd = CONFIG.holdEnd + CONFIG.exitSlideFrames;
+  const exitSlideEnd = holdEnd + CONFIG.exitSlideFrames;
 
   // ── Logo X position ───────────────────────────────────────────────────────
   const logoXEntry = spring({
@@ -64,13 +67,13 @@ export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
     from: 0, to: stripW,
   });
   const logoXExit = spring({
-    frame: frame - CONFIG.holdEnd,
+    frame: frame - holdEnd,
     fps,
     config: { damping: CONFIG.exitSlideDamping, stiffness: CONFIG.slideStiffness },
     from: stripW, to: 0,
   });
   // Clamp exit to ≥0 so spring overshoot doesn't push logo off-screen
-  const logoX = frame < CONFIG.holdEnd ? logoXEntry : Math.max(0, logoXExit);
+  const logoX = frame < holdEnd ? logoXEntry : Math.max(0, logoXExit);
 
   // ── Logo scale + opacity ──────────────────────────────────────────────────
   // Entry: spring 0 → 1. Exit: bloom (grow to 1.6×) + fade out.

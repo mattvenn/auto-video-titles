@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, CalculateMetadataFunction, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const CONFIG = {
@@ -31,7 +31,7 @@ const CONFIG = {
   // Timing (frames @ 30 fps)
   popStart:        5,
   slideStart:      22,
-  holdEnd:         202,
+  holdEnd:         172,
   exitSlideFrames: 40,  // enough frames for the spring to settle
   exitPopFrames:   8,
 
@@ -43,23 +43,27 @@ const CONFIG = {
   exitSlideDamping: 30,  // overdamped (>24) — no oscillation on exit
 };
 
-export const TT_CTA_DURATION = CONFIG.holdEnd + CONFIG.exitSlideFrames + CONFIG.exitPopFrames;
-
 export type TTCallToActionProps = {
-  header?: string;
-  line1?:  string;
-  line2?:  string;
+  header?:  string;
+  line1?:   string;
+  line2?:   string;
+  holdEnd?: number;
 };
 
+export const calculateMetadata: CalculateMetadataFunction<TTCallToActionProps> = ({ props }) => ({
+  durationInFrames: (props.holdEnd ?? CONFIG.holdEnd) + CONFIG.exitSlideFrames + CONFIG.exitPopFrames,
+});
+
 export const TTCallToAction: React.FC<TTCallToActionProps> = ({
-  header = 'Header',
-  line1  = 'Line one',
-  line2  = 'Line two',
+  header  = 'Header',
+  line1   = 'Line one',
+  line2   = 'Line two',
+  holdEnd = CONFIG.holdEnd,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const exitSlideEnd = CONFIG.holdEnd + CONFIG.exitSlideFrames;
+  const exitSlideEnd = holdEnd + CONFIG.exitSlideFrames;
 
   // ── Logo X position ───────────────────────────────────────────────────────
   const logoXEntry = spring({
@@ -69,12 +73,12 @@ export const TTCallToAction: React.FC<TTCallToActionProps> = ({
     from: 0, to: CONFIG.stripW,
   });
   const logoXExit = spring({
-    frame: frame - CONFIG.holdEnd,
+    frame: frame - holdEnd,
     fps,
     config: { damping: CONFIG.exitSlideDamping, stiffness: CONFIG.slideStiffness },
     from: CONFIG.stripW, to: 0,
   });
-  const logoX = frame < CONFIG.holdEnd ? logoXEntry : Math.max(0, logoXExit);
+  const logoX = frame < holdEnd ? logoXEntry : Math.max(0, logoXExit);
 
   // ── Logo scale + opacity ──────────────────────────────────────────────────
   const logoScaleEntry = spring({
