@@ -1,6 +1,6 @@
-COMPOSITIONS := MyComp
+COMPOSITIONS := MyComp TitleCard LowerThirdVFD
 
-.PHONY: render-all studio
+.PHONY: render-all render-card studio
 
 studio:
 	npx remotion studio
@@ -8,3 +8,11 @@ studio:
 render-all:
 	mkdir -p out
 	$(foreach comp,$(COMPOSITIONS),npx remotion render src/index.ts $(comp) out/$(comp).mov --codec=prores --prores-profile=4444;)
+
+# Render a single card with custom props.
+# Called by render_titles.py — do not invoke directly.
+#   OUT        = output file path
+#   PROPS_FILE = path to a JSON file containing {"line1":"...","line2":"..."}
+render-card:
+	mkdir -p $(OUT)
+	node render_frames.mjs --out=$(OUT) --props=$(PROPS_FILE)

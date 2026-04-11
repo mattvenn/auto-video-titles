@@ -23,6 +23,7 @@ DaVinci Resolve scripting:
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -66,7 +67,7 @@ def frames_to_resolve_tc(frames: int, fps: int) -> str:
 def render_card(card: dict, config: dict, out_dir: Path) -> Path:
     """Delegate rendering to the Makefile render-card target. Returns the output path."""
     card_id  = card["id"]
-    out_path = out_dir / f"{card_id}.mov"
+    out_path = out_dir / card_id   # directory of PNG frames
 
     section = card.get("section", "")
     label   = f"[{section}] " if section else ""
@@ -191,21 +192,27 @@ def insert_into_resolve(cards: list[dict], config: dict, out_dir: Path):
     media_pool.SetCurrentFolder(remotion_bin)
     print(f"\nUsing media pool bin: 'remotion'")
 
-    # ── Import clips into that bin ────────────────────────────────────────────
+    # ── Import PNG sequences into that bin ───────────────────────────────────
     paths = []
     for card in cards:
-        out_path = out_dir / f"{card['id']}.mov"
-        if not out_path.exists():
-            print(f"  SKIP {card['id']} — file not found: {out_path}")
+        out_path = out_dir / card["id"]   # directory of PNG frames
+        if not out_path.is_dir() or not any(out_path.glob("*.png")):
+            print(f"  SKIP {card['id']} — frames dir not found: {out_path}")
         else:
             paths.append((card, out_path))
 
     media_items: dict[str, object] = {}
     for card, out_path in paths:
-        items = media_pool.ImportMedia([str(out_path.resolve())])
+        png_files = sorted(out_path.glob("*.png"))
+        n = len(png_files)
+        # Extract numeric indices from filenames (e.g. element-000.png → 0)
+        indices = [int(re.search(r'\d+', f.stem).group()) for f in png_files]
+        all_paths = [str(f.resolve()) for f in png_files]
+        items = media_pool.ImportMedia(all_paths)
         if items:
+            # Resolve may group sequential images into one sequence clip
+            print(f"  imported  {card['id']}  → {len(items)} item(s) from {n} frames")
             media_items[card["id"]] = items[0]
-            print(f"  imported  {card['id']}.mov")
         else:
             print(f"  ERROR: could not import {out_path}")
 
@@ -273,11 +280,17 @@ def place_from_bin(cards: list[dict], config: dict):
         print("ERROR: No 'remotion' bin found in media pool. Run --resolve first.")
         sys.exit(1)
 
-    # Index clips in the bin by filename (without extension)
-    bin_clips = {
-        item.GetName().rsplit(".", 1)[0]: item
-        for item in remotion_bin.GetClipList()
-    }
+    # Index clips in the bin — PNG sequences appear with their first frame name;
+    # match by stripping digits/extension to recover the card id from folder name.
+    all_clips = remotion_bin.GetClipList()
+    bin_clips: dict[str, object] = {}
+    for item in all_clips:
+        name = item.GetName()
+        # Try exact match (card id) or strip leading zeros from frame filename
+        clip_path = item.GetClipProperty("File Path") or ""
+        # The card id is the parent directory name of the first frame
+        parent = Path(clip_path).parent.name if clip_path else name.rsplit(".", 1)[0]
+        bin_clips[parent] = item
     print(f"Found {len(bin_clips)} clip(s) in 'remotion' bin: {list(bin_clips.keys())}")
 
     # Explicitly set this timeline as current
