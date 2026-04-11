@@ -61,4 +61,14 @@ await renderFrames({
 });
 
 process.stdout.write('\n');
+
+// Rename element-NNN.png → <card-id>-NNN.png
+const cardName = path.basename(outDir);
+for (const file of fs.readdirSync(outDir)) {
+  const match = file.match(/^element-(\d+)\.png$/);
+  if (match) {
+    fs.renameSync(path.join(outDir, file), path.join(outDir, `${cardName}-${match[1]}.png`));
+  }
+}
+
 console.log('Done.');
