@@ -19,17 +19,18 @@ const CONFIG = {
   bgFadeOut:  6,    // background fades to black at the end
   total:      150,
 
-  // Logo
-  logoSize: 400,
+  // Logo + text together fill ~80% of 1080px vertical space (864px).
+  // Block: 700 (logo) + 44 (gap) + 120 (slot) = 864px, centred at y=540.
+  logoSize: 700,
   logoCX:   960,
-  logoCY:   490,
+  logoCY:   460,   // (1080 - 864) / 2 + 350 = 108 + 350 = 458 ≈ 460
 
   // Text slot — transparent overflow:hidden container, clips the sliding text
-  textGap:    20,   // gap between bottom of logo and top of slot
-  slotH:      60,   // slot height (text line height)
-  fontSize:   44,
+  textGap:    44,   // gap between bottom of logo and top of slot (slightly larger = "down a little")
+  slotH:      120,  // slot height
+  fontSize:   80,
   fontFamily: '"Avenir Next", "Avenir", "Trebuchet MS", Arial, sans-serif',
-  textColor:  '#FFFFFF',
+  textColor:  '#000000',
 
   text: 'ZeroToASICcourse.com',
 
