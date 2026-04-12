@@ -1,5 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
+import { z } from 'zod';
 import { FONT, FALLBACK_GLYPH } from '../vfd-font';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -49,17 +50,19 @@ export function getDuration(header: string, line1: string, line2: string, fps: n
   );
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
-export type LowerThirdCallToActionProps = {
-  header?: string;
-  line1?:  string;
-  line2?:  string;
-};
+// ── Schema & types ────────────────────────────────────────────────────────────
+export const lowerThirdCallToActionSchema = z.object({
+  header: z.string(),
+  line1:  z.string(),
+  line2:  z.string(),
+});
+
+export type LowerThirdCallToActionProps = z.infer<typeof lowerThirdCallToActionSchema>;
 
 export const LowerThirdCallToAction: React.FC<LowerThirdCallToActionProps> = ({
-  header = '',
-  line1  = '',
-  line2  = '',
+  header,
+  line1,
+  line2,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();

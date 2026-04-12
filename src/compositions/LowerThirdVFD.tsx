@@ -1,5 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
+import { z } from 'zod';
 import { FONT, FALLBACK_GLYPH } from '../vfd-font';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -46,10 +47,15 @@ export function getDuration(line1: string, line2: string, fps: number): number {
   );
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
-export type LowerThirdVFDProps = { line1?: string; line2?: string };
+// ── Schema & types ────────────────────────────────────────────────────────────
+export const lowerThirdVFDSchema = z.object({
+  line1: z.string(),
+  line2: z.string(),
+});
 
-export const LowerThirdVFD: React.FC<LowerThirdVFDProps> = ({ line1 = '', line2 = '' }) => {
+export type LowerThirdVFDProps = z.infer<typeof lowerThirdVFDSchema>;
+
+export const LowerThirdVFD: React.FC<LowerThirdVFDProps> = ({ line1, line2 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
