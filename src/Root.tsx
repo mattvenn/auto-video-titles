@@ -7,7 +7,7 @@ import { TTCallToAction, TTCallToActionProps, ttCallToActionSchema, calculateMet
 import { Z2ATitleBar, Z2ATitleBarProps, z2ATitleBarSchema, calculateMetadata as calcZ2ATitleBar } from './compositions/Z2ATitleBar';
 import { Z2ATitleBarV2, Z2ATitleBarV2Props, z2ATitleBarV2Schema, calculateMetadataV2 as calcZ2ATitleBarV2 } from './compositions/Z2ATitleBarV2';
 import { Z2ALogoAnim, z2ALogoAnimSchema } from './compositions/Z2ALogoAnim';
-import { Z2AIntro } from './compositions/Z2AIntro';
+import { Z2AIntro, Z2AIntroProps, z2AIntroSchema, calculateMetadata as calcZ2AIntro } from './compositions/Z2AIntro';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -91,15 +91,17 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"size":100,"cx":850,"cy":400,"blend":"multiply" as const}}
+        defaultProps={{"size":400,"cx":850,"cy":400,"blend":"cutout" as const}}
       />
       <Composition
         id="Z2AIntro"
         component={Z2AIntro}
-        durationInFrames={150}
+        calculateMetadata={calcZ2AIntro as CalculateMetadataFunction<Z2AIntroProps>}
+        schema={z2AIntroSchema}
         fps={30}
         width={1920}
         height={1080}
+        defaultProps={{"holdFrames":60,"logoFreezeAt":40,"titleSlideInLogoFrame":38,"bgFadeIn":6,"bgFadeOut":6,"videoStartFrom":78}}
       />
     </>
   );
