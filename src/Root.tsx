@@ -7,6 +7,7 @@ import { TTCallToAction, TTCallToActionProps, ttCallToActionSchema, calculateMet
 import { Z2ATitleBar, Z2ATitleBarProps, z2ATitleBarSchema, calculateMetadata as calcZ2ATitleBar } from './compositions/Z2ATitleBar';
 import { Z2ATitleBarV2, Z2ATitleBarV2Props, z2ATitleBarV2Schema, calculateMetadataV2 as calcZ2ATitleBarV2 } from './compositions/Z2ATitleBarV2';
 import { Z2ALogoAnim, z2ALogoAnimSchema } from './compositions/Z2ALogoAnim';
+import { Z2AIntro } from './compositions/Z2AIntro';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -91,6 +92,14 @@ export const RemotionRoot: React.FC = () => {
         width={1920}
         height={1080}
         defaultProps={{"size":100,"cx":850,"cy":400,"blend":"multiply" as const}}
+      />
+      <Composition
+        id="Z2AIntro"
+        component={Z2AIntro}
+        durationInFrames={96}
+        fps={30}
+        width={1920}
+        height={1080}
       />
     </>
   );
