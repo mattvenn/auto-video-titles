@@ -112,7 +112,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"holdFrames":10,"videoStartFrom":78}}
+        defaultProps={{"holdFrames":10,"logoFadeDuration":12,"bgFadeDuration":12,"bgFadeDelay":0,"videoStartFrom":78}}
       />
     </>
   );
