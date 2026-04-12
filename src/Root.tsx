@@ -108,7 +108,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"size":298,"cx":1193,"cy":372,"zoomPct":172,"offsetX":0,"offsetY":112,"blend":"multiply" as const}}
+        defaultProps={{"size":100,"cx":850,"cy":400,"blend":"multiply" as const}}
       />
     </>
   );
