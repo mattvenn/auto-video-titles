@@ -1,4 +1,4 @@
-COMPOSITIONS := MyComp LowerThirdVFD LowerThirdCallToAction TTLowerThird TTCallToAction
+COMPOSITIONS := MyComp LowerThirdVFD LowerThirdCallToAction TTLowerThird TTCallToAction Z2ATitleBar Z2ALogo
 
 .PHONY: render-all render-card studio clean
 

@@ -1,5 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, CalculateMetadataFunction, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
+import { z } from 'zod';
+import { TT_SPRINGS, TT_COLORS, TT_FONT } from './tt-shared';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const CONFIG = {
@@ -10,17 +12,17 @@ const CONFIG = {
   // 1920 - left(60) - logo(260) - right margin(40) = 1560
   stripW:  1560,
 
-  // Colors
-  stripColor: '#fef244',
-  textColor:  '#040371',
-  line1Color: '#040371',
-  line2Color: '#f82381',
+  // Colors (from shared TT brand tokens)
+  stripColor: TT_COLORS.stripColor,
+  textColor:  TT_COLORS.textColor,
+  line1Color: TT_COLORS.line1Color,
+  line2Color: TT_COLORS.line2Color,
 
   // Typography
   headerSize:  68,
   line1Size:   40,
   line2Size:   32,
-  fontFamily:  '"Montserrat", "Arial Black", Arial, sans-serif',
+  fontFamily:  TT_FONT,
   textPadding: 40,
   lineGap:     10,
 
@@ -35,30 +37,28 @@ const CONFIG = {
   exitSlideFrames: 40,  // enough frames for the spring to settle
   exitPopFrames:   8,
 
-  // Spring feel
-  popDamping:     14,
-  popStiffness:   300,
-  slideDamping:     18,
-  slideStiffness:   140,
-  exitSlideDamping: 30,  // overdamped (>24) — no oscillation on exit
+  // Spring feel (from shared TT brand tokens)
+  ...TT_SPRINGS,
 };
 
-export type TTCallToActionProps = {
-  header?:  string;
-  line1?:   string;
-  line2?:   string;
-  holdEnd?: number;
-};
+export const ttCallToActionSchema = z.object({
+  header:  z.string(),
+  line1:   z.string(),
+  line2:   z.string(),
+  holdEnd: z.number().int().min(1),
+});
+
+export type TTCallToActionProps = z.infer<typeof ttCallToActionSchema>;
 
 export const calculateMetadata: CalculateMetadataFunction<TTCallToActionProps> = ({ props }) => ({
   durationInFrames: (props.holdEnd ?? CONFIG.holdEnd) + CONFIG.exitSlideFrames + CONFIG.exitPopFrames,
 });
 
 export const TTCallToAction: React.FC<TTCallToActionProps> = ({
-  header  = 'Header',
-  line1   = 'Line one',
-  line2   = 'Line two',
-  holdEnd = CONFIG.holdEnd,
+  header,
+  line1,
+  line2,
+  holdEnd,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();

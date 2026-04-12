@@ -1,5 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, CalculateMetadataFunction, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
+import { z } from 'zod';
+import { TT_SPRINGS, TT_COLORS, TT_FONT } from './tt-shared';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const CONFIG = {
@@ -9,15 +11,15 @@ const CONFIG = {
   stripH:  112,  // logo pokes ~16px above and below
   // stripW is calculated dynamically from text content — see below
 
-  // Colors
-  stripColor:    '#fef244',
-  textColor:     '#040371',
-  subtitleColor: '#f82381',
+  // Colors (from shared TT brand tokens)
+  stripColor:    TT_COLORS.stripColor,
+  textColor:     TT_COLORS.textColor,
+  subtitleColor: TT_COLORS.subtitleColor,
 
   // Typography
   nameSize:    48,
   titleSize:   28,
-  fontFamily:  '"Montserrat", "Arial Black", Arial, sans-serif',
+  fontFamily:  TT_FONT,
   textPadding: 24,
 
   // Position on screen
@@ -31,24 +33,26 @@ const CONFIG = {
   exitSlideFrames: 40,  // enough frames for the spring to settle
   exitPopFrames:   12,  // logo pops out
 
-  // Spring feel
-  popDamping:      14,
-  popStiffness:    300,
-  slideDamping:    18,
-  slideStiffness:  140,
-  exitSlideDamping: 30,  // overdamped (>24) — no oscillation on exit
+  // Spring feel (from shared TT brand tokens)
+  ...TT_SPRINGS,
 };
 
-export type TTLowerThirdProps = { name?: string; title?: string; holdEnd?: number };
+export const ttLowerThirdSchema = z.object({
+  name:    z.string(),
+  title:   z.string(),
+  holdEnd: z.number().int().min(1),
+});
+
+export type TTLowerThirdProps = z.infer<typeof ttLowerThirdSchema>;
 
 export const calculateMetadata: CalculateMetadataFunction<TTLowerThirdProps> = ({ props }) => ({
   durationInFrames: (props.holdEnd ?? CONFIG.holdEnd) + CONFIG.exitSlideFrames + CONFIG.exitPopFrames,
 });
 
 export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
-  name    = 'Name',
-  title   = 'Title',
-  holdEnd = CONFIG.holdEnd,
+  name,
+  title,
+  holdEnd,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
