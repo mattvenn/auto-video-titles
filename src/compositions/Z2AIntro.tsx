@@ -23,52 +23,55 @@ const CONFIG = {
   fontFamily: '"Avenir Next", "Avenir", "Trebuchet MS", Arial, sans-serif',
   textColor:  '#000000',
   text:       'ZeroToASICcourse.com',
-  slideDamping:   18,
-  slideStiffness: 150,
-  // Frames before logo ends when text starts exiting
-  textExitLeadFrames: 6,
+  slideDamping:   46,
+  slideStiffness: 500,
+  bgFadeIn:       6,
+  bgFadeOut:      6,
 };
 
-// Logo animation has 96 source frames (indices 0–95)
-const LOGO_TOTAL_FRAMES = 96;
+// Logo animation constants — tied to the source PNG sequence, not user-configurable
+const LOGO_TOTAL_FRAMES   = 88;  // usable source frames (indices 0–87; last 8 are blank)
+const LOGO_FULLY_DRAWN_AT = 40;  // source frame where all letters are fully revealed
+const LOGO_TEXT_SLIDE_AT  = 30;  // logo source frame when text starts sliding in
+
+// Text exit timing — frames after hold ends when text starts exiting
+const TEXT_EXIT_DELAY  = 38;
+// Approximate frames for the text exit spring to fully settle off screen
+// (exit spring: damping 40, stiffness 400 — critically damped, ~12 f to clear)
+const TEXT_EXIT_FRAMES = 12;
 
 // ── Schema ────────────────────────────────────────────────────────────────────
 export const z2AIntroSchema = z.object({
-  holdFrames:            z.number().int().min(0).max(300),  // hold duration after logo freezes
-  logoFreezeAt:          z.number().int().min(0).max(95),   // source frame at which logo pauses
-  titleSlideInLogoFrame: z.number().int().min(0).max(95),   // logo source frame when text starts sliding in
-  bgFadeIn:              z.number().int().min(0).max(30),   // background fade-in frames
-  bgFadeOut:             z.number().int().min(0).max(30),   // background fade-out frames after logo ends
-  videoStartFrom:        z.number().int().min(0).max(3000), // bg video start frame
+  holdFrames:         z.number().int().min(0).max(300),  // hold duration after logo freezes
+  bgHoldFrames:       z.number().int().min(0).max(300),  // extra hold after text is off screen before bg fades (0 = fade immediately)
+  videoStartFrom:     z.number().int().min(0).max(3000), // bg video start frame
 });
 
 export type Z2AIntroProps = z.infer<typeof z2AIntroSchema>;
 
 // ── calculateMetadata ─────────────────────────────────────────────────────────
-// Total = bgFadeIn + logoFreezeAt + holdFrames + (LOGO_TOTAL_FRAMES - logoFreezeAt) + bgFadeOut
-//       = bgFadeIn + holdFrames + LOGO_TOTAL_FRAMES + bgFadeOut
-export const calculateMetadata: CalculateMetadataFunction<Z2AIntroProps> = ({ props }) => ({
-  durationInFrames: props.bgFadeIn + props.holdFrames + LOGO_TOTAL_FRAMES + props.bgFadeOut,
-});
+export const calculateMetadata: CalculateMetadataFunction<Z2AIntroProps> = ({ props }) => {
+  const holdEndComp    = CONFIG.bgFadeIn + LOGO_FULLY_DRAWN_AT + props.holdFrames;
+  const titleExitComp  = holdEndComp + TEXT_EXIT_DELAY;
+  const bgFadeOutStart = titleExitComp + TEXT_EXIT_FRAMES + props.bgHoldFrames;
+  return { durationInFrames: bgFadeOutStart + CONFIG.bgFadeOut };
+};
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export const Z2AIntro: React.FC<Z2AIntroProps> = ({
   holdFrames,
-  logoFreezeAt,
-  titleSlideInLogoFrame,
-  bgFadeIn,
-  bgFadeOut,
+  bgHoldFrames,
   videoStartFrom,
 }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, height } = useVideoConfig();
 
   // ── Timeline milestones (composition frames) ───────────────────────────────
-  const logoStartComp  = bgFadeIn;
-  const logoFreezeComp = bgFadeIn + logoFreezeAt;
+  const logoStartComp  = CONFIG.bgFadeIn;
+  const logoFreezeComp = CONFIG.bgFadeIn + LOGO_FULLY_DRAWN_AT;
   const holdEndComp    = logoFreezeComp + holdFrames;
-  const logoEndComp    = holdEndComp + (LOGO_TOTAL_FRAMES - logoFreezeAt); // = bgFadeIn + holdFrames + 96
-  const bgFadeOutStart = logoEndComp;
+  const titleExitComp  = holdEndComp + TEXT_EXIT_DELAY;
+  const bgFadeOutStart = titleExitComp + TEXT_EXIT_FRAMES + bgHoldFrames;
 
   // ── Effective logo source frame ────────────────────────────────────────────
   let effectiveLogoFrame: number;
@@ -77,42 +80,46 @@ export const Z2AIntro: React.FC<Z2AIntroProps> = ({
   } else if (frame < logoFreezeComp) {
     effectiveLogoFrame = frame - logoStartComp;
   } else if (frame < holdEndComp) {
-    effectiveLogoFrame = logoFreezeAt;
+    effectiveLogoFrame = LOGO_FULLY_DRAWN_AT;
   } else {
-    effectiveLogoFrame = logoFreezeAt + (frame - holdEndComp);
+    effectiveLogoFrame = LOGO_FULLY_DRAWN_AT + (frame - holdEndComp);
   }
   effectiveLogoFrame = Math.min(effectiveLogoFrame, LOGO_TOTAL_FRAMES - 1);
 
   // ── Background opacity ─────────────────────────────────────────────────────
   const bgOpacity = interpolate(
     frame,
-    [0, bgFadeIn, bgFadeOutStart, bgFadeOutStart + bgFadeOut],
+    [0, CONFIG.bgFadeIn, bgFadeOutStart, bgFadeOutStart + CONFIG.bgFadeOut],
     [0, 1, 1, 0],
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
   );
 
   // ── Text timing ───────────────────────────────────────────────────────────
-  const titleStart     = bgFadeIn + titleSlideInLogoFrame;
-  const titleExitComp  = logoEndComp - CONFIG.textExitLeadFrames;
-  const isTextExit     = frame >= titleExitComp;
+  const titleStart  = CONFIG.bgFadeIn + LOGO_TEXT_SLIDE_AT;
+  const isTextExit  = frame >= titleExitComp;
 
   const slotTop = CONFIG.logoCY + CONFIG.logoSize / 2 + CONFIG.textGap;
 
+  // Distance to push text fully off the bottom of the screen
+  const offscreenY = height - slotTop;
+
+  // Entry: slides up from off screen, eases into place
   const entryFrac = spring({
     frame: frame - titleStart,
     fps,
     config: { damping: CONFIG.slideDamping, stiffness: CONFIG.slideStiffness },
     from: 0, to: 1,
   });
-  const textEntryY = interpolate(entryFrac, [0, 1], [-CONFIG.slotH, 0]);
+  const textEntryY = interpolate(entryFrac, [0, 1], [offscreenY, 0]);
 
+  // Exit: accelerates back down off screen
   const exitFrac = spring({
     frame: frame - titleExitComp,
     fps,
-    config: { damping: CONFIG.slideDamping, stiffness: CONFIG.slideStiffness },
+    config: { damping: 40, stiffness: 400 },
     from: 0, to: 1,
   });
-  const textExitY = interpolate(exitFrac, [0, 1], [0, -CONFIG.slotH]);
+  const textExitY = interpolate(exitFrac, [0, 1], [0, offscreenY]);
 
   const textY = isTextExit ? textExitY : textEntryY;
 
@@ -151,7 +158,6 @@ export const Z2AIntro: React.FC<Z2AIntroProps> = ({
           left:           0,
           right:          0,
           height:         CONFIG.slotH,
-          overflow:       'hidden',
           display:        'flex',
           justifyContent: 'center',
           alignItems:     'flex-start',

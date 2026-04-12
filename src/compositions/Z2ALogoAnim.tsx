@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const CONFIG = {
-  totalFrames: 96,   // 0000–0095
+  totalFrames: 88,   // 0000–0087 (last 8 frames are blank)
   srcFps:      30,   // original render fps
 
   // Calibrated footage alignment — dialled in to match the circle boundary.

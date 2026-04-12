@@ -87,7 +87,7 @@ export const RemotionRoot: React.FC = () => {
         id="Z2ALogoAnim"
         component={Z2ALogoAnim}
         schema={z2ALogoAnimSchema}
-        durationInFrames={96}
+        durationInFrames={88}
         fps={30}
         width={1920}
         height={1080}
@@ -101,7 +101,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"holdFrames":60,"logoFreezeAt":40,"titleSlideInLogoFrame":38,"bgFadeIn":6,"bgFadeOut":6,"videoStartFrom":78}}
+        defaultProps={{"holdFrames":30,"bgHoldFrames":0,"videoStartFrom":78}}
       />
     </>
   );
