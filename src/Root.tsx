@@ -96,7 +96,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="Z2AIntro"
         component={Z2AIntro}
-        durationInFrames={96}
+        durationInFrames={150}
         fps={30}
         width={1920}
         height={1080}
