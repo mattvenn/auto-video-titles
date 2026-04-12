@@ -8,6 +8,7 @@ import { Z2ATitleBar, Z2ATitleBarProps, z2ATitleBarSchema, calculateMetadata as 
 import { Z2ATitleBarV2, Z2ATitleBarV2Props, z2ATitleBarV2Schema, calculateMetadataV2 as calcZ2ATitleBarV2 } from './compositions/Z2ATitleBarV2';
 import { Z2ALogoAnim, z2ALogoAnimSchema } from './compositions/Z2ALogoAnim';
 import { Z2AIntro, Z2AIntroProps, z2AIntroSchema, calculateMetadata as calcZ2AIntro } from './compositions/Z2AIntro';
+import { Z2AIntroLogoExpand, Z2AIntroLogoExpandProps, z2AIntroLogoExpandSchema, calculateMetadata as calcZ2AIntroLogoExpand } from './compositions/Z2AIntroLogoExpand';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -81,7 +82,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"line1":"Zero to ASIC course","line2":"An introduction to analog microelectronics","holdFrames":79,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20}}
+        defaultProps={{"line1":"Zero to ASIC course","line2":"An introduction to analog microelectronics","holdFrames":79,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showIntroBackground":true,"introVideoStartFrom":0}}
       />
       <Composition
         id="Z2ALogoAnim"
@@ -102,6 +103,16 @@ export const RemotionRoot: React.FC = () => {
         width={1920}
         height={1080}
         defaultProps={{"holdFrames":30,"bgHoldFrames":0,"videoStartFrom":78}}
+      />
+      <Composition
+        id="Z2AIntroLogoExpand"
+        component={Z2AIntroLogoExpand}
+        calculateMetadata={calcZ2AIntroLogoExpand as CalculateMetadataFunction<Z2AIntroLogoExpandProps>}
+        schema={z2AIntroLogoExpandSchema}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{"holdFrames":10,"videoStartFrom":78}}
       />
     </>
   );

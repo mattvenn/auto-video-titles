@@ -9,6 +9,7 @@ import {
   staticFile,
   useCurrentFrame,
   useVideoConfig,
+  Video,
 } from 'remotion';
 import { z } from 'zod';
 
@@ -62,6 +63,7 @@ const CONFIG = {
   sweepRotation: -22,  // degrees — tilt to suggest top-right light source
 };
 
+
 // ── Schema & types ────────────────────────────────────────────────────────────
 export const z2ATitleBarV2Schema = z.object({
   line1:             z.string(),
@@ -78,16 +80,22 @@ export const z2ATitleBarV2Schema = z.object({
   highlightStart:     z.number().int().min(0),   // frame at which sweep starts
   highlightLength:    z.number().int().min(3),   // duration of sweep in frames (min 3 ensures safe fade ramps)
   highlightIntensity: z.number().int().min(0).max(100),
+  // Intro background — renders the Z2AIntro video+logo layers behind the title bar
+  showIntroBackground:  z.boolean(),
+  introVideoStartFrom:  z.number().int().min(0).max(3000),
 });
 
 export type Z2ATitleBarV2Props = z.infer<typeof z2ATitleBarV2Schema>;
 
 // ── calculateMetadata ─────────────────────────────────────────────────────────
+const INTRO_ANIM_DELAY = 10;  // frames to delay title bar when intro background is shown
+
 export const calculateMetadataV2: CalculateMetadataFunction<Z2ATitleBarV2Props> = ({ props }) => {
   const holdEnd    = props.holdFrames;
   const exitFrames = props.exitStyle === 'drop' ? CONFIG.dropFrames : CONFIG.fadeFrames;
+  const delay      = props.showIntroBackground ? INTRO_ANIM_DELAY : 0;
   return {
-    durationInFrames: holdEnd + CONFIG.collapseDelay + CONFIG.collapseFrames + exitFrames + 5,
+    durationInFrames: holdEnd + CONFIG.collapseDelay + CONFIG.collapseFrames + exitFrames + 5 + delay,
   };
 };
 
@@ -104,13 +112,20 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
   highlightStart,
   highlightLength,
   highlightIntensity,
+  showIntroBackground,
+  introVideoStartFrom,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  // When the intro background is shown, delay the title bar animation by INTRO_ANIM_DELAY frames.
+  // introBgOpacity uses real frame so the video starts immediately.
+  const animFrame = frame - (showIntroBackground ? INTRO_ANIM_DELAY : 0);
+
+
   const r       = CONFIG.circleD / 2;
   const holdEnd = holdFrames;
-  const isExit  = frame >= holdEnd;
+  const isExit  = animFrame >= holdEnd;
 
   // ── Exit milestones ───────────────────────────────────────────────────────
   const collapseStart = holdEnd       + CONFIG.collapseDelay;
@@ -123,7 +138,7 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
 
   // ── Entry: tablet width circleD → tabletW ────────────────────────────────
   const expandFrac = spring({
-    frame: frame - CONFIG.circleGrowEnd,
+    frame: animFrame - CONFIG.circleGrowEnd,
     fps,
     config: { damping: CONFIG.slideDamping, stiffness: CONFIG.slideStiffness },
     from: 0, to: 1,
@@ -132,36 +147,36 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
 
   // ── Entry: disc eases in large → circleD ─────────────────────────────────
   const discScale = interpolate(
-    frame,
+    animFrame,
     [0, CONFIG.discScaleEnd],
     [discStartScale, 1],
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic) },
   );
   const discOpacity = interpolate(
-    frame,
+    animFrame,
     [CONFIG.discFadeStart, CONFIG.discFadeEnd],
     [1, 0],
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
   );
 
   // ── Exit: width tabletW → circleD ────────────────────────────────────────
-  const collapseT = interpolate(frame, [collapseStart, collapseEnd], [0, 1], {
+  const collapseT = interpolate(animFrame, [collapseStart, collapseEnd], [0, 1], {
     extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic),
   });
   const tabletWidthExit = tabletW - collapseT * (tabletW - CONFIG.circleD);
   const currentTabletW  = isExit ? tabletWidthExit : tabletWidthEntry;
 
   // ── Exit option 1: fade ───────────────────────────────────────────────────
-  const fadeOpacity = interpolate(frame, [collapseEnd, collapseEnd + CONFIG.fadeFrames], [1, 0], {
+  const fadeOpacity = interpolate(animFrame, [collapseEnd, collapseEnd + CONFIG.fadeFrames], [1, 0], {
     extrapolateLeft: 'clamp', extrapolateRight: 'clamp',
   });
 
   // ── Exit option 2: drop off screen ───────────────────────────────────────
-  const dropY = interpolate(frame, [collapseEnd, collapseEnd + CONFIG.dropFrames], [0, CONFIG.dropDistance], {
+  const dropY = interpolate(animFrame, [collapseEnd, collapseEnd + CONFIG.dropFrames], [0, CONFIG.dropDistance], {
     extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.in(Easing.quad),
   });
   const dropOpacity = interpolate(
-    frame,
+    animFrame,
     [collapseEnd + CONFIG.dropFrames * 0.6, collapseEnd + CONFIG.dropFrames],
     [1, 0],
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
@@ -172,7 +187,7 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
 
   // ── Text ──────────────────────────────────────────────────────────────────
   const textEntryFrac = spring({
-    frame: frame - CONFIG.textSlideStart,
+    frame: animFrame - CONFIG.textSlideStart,
     fps,
     config: { damping: CONFIG.slideDamping, stiffness: CONFIG.slideStiffness },
     from: 0, to: 1,
@@ -180,7 +195,7 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
   const textEntryY = interpolate(textEntryFrac, [0, 1], [-CONFIG.circleD, 0]);
 
   const textExitFrac = spring({
-    frame: frame - holdEnd,
+    frame: animFrame - holdEnd,
     fps,
     config: { damping: CONFIG.slideDamping, stiffness: CONFIG.slideStiffness },
     from: 0, to: 1,
@@ -195,7 +210,7 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
   // ── Sweep highlight ───────────────────────────────────────────────────────
   // sweepFrac 0→1: stripe travels from right-outside the pill to left-outside.
   const sweepFrac = interpolate(
-    frame,
+    animFrame,
     [highlightStart, highlightStart + highlightLength],
     [0, 1],
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
@@ -221,6 +236,26 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
 
   return (
     <AbsoluteFill style={{ backgroundColor: 'transparent' }}>
+
+      {/* ── Intro background (video + logo anim) ─────────────────────────────── */}
+      {showIntroBackground && (
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <Video
+            src={staticFile('microchip-background-h264.mp4')}
+            startFrom={introVideoStartFrom}
+            style={{
+              width:           '100%',
+              height:          '100%',
+              objectFit:       'cover',
+              transform:       'scale(1.2)',
+              transformOrigin: 'center center',
+            }}
+          />
+        </div>
+      )}
+
+      {/* ── Title bar content — hidden until animFrame >= 0 (respects intro delay) */}
+      {animFrame >= 0 && <>
 
       {/* ── Dark tablet (navy pill) ──────────────────────────────────────────── */}
       <div
@@ -339,6 +374,8 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
           </g>
         </svg>
       )}
+
+      </> /* end animFrame >= 0 gate */}
 
     </AbsoluteFill>
   );
