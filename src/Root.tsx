@@ -6,8 +6,9 @@ import { LowerThirdCallToAction, getDuration as getCtaDuration, LowerThirdCallTo
 import { TTLowerThird, TTLowerThirdProps, ttLowerThirdSchema, calculateMetadata as calcTTLowerThird } from './compositions/TTLowerThird';
 import { TTCallToAction, TTCallToActionProps, ttCallToActionSchema, calculateMetadata as calcTTCallToAction } from './compositions/TTCallToAction';
 import { Z2ATitleBar, Z2ATitleBarProps, z2ATitleBarSchema, calculateMetadata as calcZ2ATitleBar } from './compositions/Z2ATitleBar';
+import { Z2ATitleBarV2, Z2ATitleBarV2Props, z2ATitleBarV2Schema, calculateMetadataV2 as calcZ2ATitleBarV2 } from './compositions/Z2ATitleBarV2';
 import { Z2ALogo } from './compositions/Z2ALogo';
-import { Z2ALogoAnim } from './compositions/Z2ALogoAnim';
+import { Z2ALogoAnim, z2ALogoAnimSchema } from './compositions/Z2ALogoAnim';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -82,6 +83,16 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{"line1":"Zero to ASIC course","line2":"An introduction to analog microelectronics","holdFrames":10,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15}}
       />
       <Composition
+        id="Z2ATitleBarV2"
+        component={Z2ATitleBarV2}
+        calculateMetadata={calcZ2ATitleBarV2 as CalculateMetadataFunction<Z2ATitleBarV2Props>}
+        schema={z2ATitleBarV2Schema}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{"line1":"Zero to ASIC course","line2":"An introduction to analog microelectronics","holdFrames":79,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20}}
+      />
+      <Composition
         id="Z2ALogo"
         component={Z2ALogo}
         durationInFrames={120}
@@ -92,10 +103,12 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="Z2ALogoAnim"
         component={Z2ALogoAnim}
-        durationInFrames={120}
+        schema={z2ALogoAnimSchema}
+        durationInFrames={96}
         fps={30}
         width={1920}
         height={1080}
+        defaultProps={{"size":298,"cx":1193,"cy":372,"zoomPct":172,"offsetX":0,"offsetY":112,"blend":"multiply" as const}}
       />
     </>
   );
