@@ -7,6 +7,7 @@ import { TTLowerThird, TTLowerThirdProps, ttLowerThirdSchema, calculateMetadata 
 import { TTCallToAction, TTCallToActionProps, ttCallToActionSchema, calculateMetadata as calcTTCallToAction } from './compositions/TTCallToAction';
 import { Z2ATitleBar, Z2ATitleBarProps, z2ATitleBarSchema, calculateMetadata as calcZ2ATitleBar } from './compositions/Z2ATitleBar';
 import { Z2ALogo } from './compositions/Z2ALogo';
+import { Z2ALogoAnim } from './compositions/Z2ALogoAnim';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -58,7 +59,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"name":"Matt Venn is ace","title":"Tiny Tapeout","holdEnd":67}}
+        defaultProps={{"name":"Matt Venn","title":"Tiny Tapeout","holdEnd":67}}
       />
       <Composition
         id="TTCallToAction"
@@ -68,7 +69,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"header":"Try Tiny Tapeout","line1":"tinytapeout.com","line2":"Link in description","holdEnd":62}}
+        defaultProps={{"header":"Try Tin","line1":"tinytapeout.com","line2":"Link in description","holdEnd":62}}
       />
       <Composition
         id="Z2ATitleBar"
@@ -78,11 +79,19 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"line1":"Zero to ASIC course","line2":"An introduction to analog microelectronics","holdFrames":30,"exitStyle":"drop" as const}}
+        defaultProps={{"line1":"Zero to ASIC course","line2":"An introduction to analog microelectronics","holdFrames":10,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15}}
       />
       <Composition
         id="Z2ALogo"
         component={Z2ALogo}
+        durationInFrames={120}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Z2ALogoAnim"
+        component={Z2ALogoAnim}
         durationInFrames={120}
         fps={30}
         width={1920}
