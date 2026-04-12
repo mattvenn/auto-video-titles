@@ -26,7 +26,7 @@ jobs:
       - name: Smoke render — one still frame per composition
         run: |
           mkdir -p out/smoke
-          COMPOSITIONS="LowerThirdVFD LowerThirdCallToAction TTLowerThird TTCallToAction Z2ATitleBar Z2ATitleBarV2 Z2ALogoAnim Z2AIntro"
+          COMPOSITIONS="LowerThirdVFD LowerThirdCallToAction TTLowerThird TTCallToAction Z2ATitleBar Z2ATitleBarV2 Z2ALogoAnim Z2AIntro Z2AIntroLogoExpand"
           for comp in $COMPOSITIONS; do
             echo "--- $comp ---"
             npx remotion still src/index.ts "$comp" "out/smoke/${comp}.png" --frame=0
@@ -35,7 +35,7 @@ jobs:
       - name: Verify outputs are non-empty
         run: |
           failed=0
-          for comp in LowerThirdVFD LowerThirdCallToAction TTLowerThird TTCallToAction Z2ATitleBar Z2ATitleBarV2 Z2ALogoAnim Z2AIntro; do
+          for comp in LowerThirdVFD LowerThirdCallToAction TTLowerThird TTCallToAction Z2ATitleBar Z2ATitleBarV2 Z2ALogoAnim Z2AIntro Z2AIntroLogoExpand; do
             f="out/smoke/${comp}.png"
             if [ ! -s "$f" ]; then
               echo "FAIL: $f is missing or empty"
