@@ -25,9 +25,10 @@ export const z2ALogoAnimSchema = z.object({
   // cutout  — black opaque circle, letter shapes are transparent holes
 });
 
-// overrideFrame is a programmatic prop (not in schema — won't appear in Studio UI)
+// Programmatic props (not in schema — won't appear in Studio UI)
 export type Z2ALogoAnimProps = z.infer<typeof z2ALogoAnimSchema> & {
-  overrideFrame?: number;
+  overrideFrame?:   number;
+  containerStyle?:  React.CSSProperties; // applied to the SVG / div container for scale, opacity, etc.
 };
 
 // ── Frame filename ────────────────────────────────────────────────────────────
@@ -43,6 +44,7 @@ export const Z2ALogoAnim: React.FC<Z2ALogoAnimProps> = ({
   cy,
   blend,
   overrideFrame,
+  containerStyle,
 }) => {
   const frame = useCurrentFrame();
   const zoom = CONFIG.zoomPct / 100;
@@ -66,10 +68,12 @@ export const Z2ALogoAnim: React.FC<Z2ALogoAnimProps> = ({
           width={size}
           height={size}
           style={{
-            position: 'absolute',
-            top:      cy - half,
-            left:     cx - half,
-            overflow: 'visible',
+            position:        'absolute',
+            top:             cy - half,
+            left:            cx - half,
+            overflow:        'visible',
+            transformOrigin: 'center center',
+            ...containerStyle,
           }}
         >
           <defs>
@@ -105,14 +109,16 @@ export const Z2ALogoAnim: React.FC<Z2ALogoAnimProps> = ({
     <AbsoluteFill style={{ backgroundColor: 'transparent' }}>
       <div
         style={{
-          position:     'absolute',
-          top:          cy - size / 2,
-          left:         cx - size / 2,
-          width:        size,
-          height:       size,
-          borderRadius: '50%',
-          overflow:     'hidden',
-          mixBlendMode: blend as 'normal' | 'multiply',
+          position:        'absolute',
+          top:             cy - size / 2,
+          left:            cx - size / 2,
+          width:           size,
+          height:          size,
+          borderRadius:    '50%',
+          overflow:        'hidden',
+          mixBlendMode:    blend as 'normal' | 'multiply',
+          transformOrigin: 'center center',
+          ...containerStyle,
         }}
       >
         <Img
