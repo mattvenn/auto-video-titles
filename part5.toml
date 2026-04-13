@@ -1,0 +1,44 @@
+# Tiny Tapeout Lower-Third Title Cards
+# "Part 5 - Slicing and Dicing
+#
+# timecode: HH:MM:SS.mmm  (matches SRT source timestamps)
+
+[config]
+output_dir      = "out/part5"
+composition     = "TTLowerThird"
+timeline_offset = "00:00:00.000"
+
+# ── Intro ─────────────────────────────────────────────────────────────────────
+
+[[cards]]
+id         = "intro"
+title      = "Part 5"
+extra_text = "Slicing and Dicing"
+timecode   = "01:00:01.20"
+
+[[cards]]
+id         = "cob"
+title      = "CoB"
+extra_text = "Chip on Board"
+timecode   = "01:00:40.21"
+
+[[cards]]
+id         = "testing"
+title      = "Testing"
+timecode   = "01:01:54.05"
+
+
+[[cards]]
+id          = "swtohw"
+composition = "TTTopicCard"
+text        = "The demoboard"
+timecode    = "01:02:15.21"
+
+[[cards]]
+id          = "cta_shipping"
+composition = "TTCallToAction"
+header      = "Update your address"
+line1       = ""
+line2       = "➡️ app.tinytapeout.com/orders/ship"
+timecode    = "01:03:43.08"
+hold_frames = 120
