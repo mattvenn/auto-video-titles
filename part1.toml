@@ -2,10 +2,6 @@
 # "Part 1 - You Submitted!" — Zero to ASIC Course
 #
 # timecode: HH:MM:SS.mmm  (matches SRT source timestamps)
-# composition: override per card; defaults to config.composition
-#   TTLowerThird    — 2-line branded card (name, title)
-#   TTCallToAction  — 3-line branded CTA  (header, line1, line2)
-# enabled: set to false to skip a card without deleting it
 
 [config]
 srt_file        = "part 1 - you submitted!.srt"
@@ -17,131 +13,72 @@ timeline_offset = "00:00:00.000"
 # ── Presenter ─────────────────────────────────────────────────────────────────
 
 [[cards]]
-id      = "intro"
-section = "Intro"
-name    = "Part 1"
-title   = "You submitted, what happens next?"
-timecode = "01:00:01.21"
-enabled = true
-notes   = "intro card"
+id          = "intro"
+composition = "TTLowerThird"
+name        = "Part 1"
+title       = "You submitted, what happens next?"
+timecode    = "01:00:01.21"
 
 
 # ── Submission process ────────────────────────────────────────────────────────
 
 [[cards]]
-id       = "precheck"
-section  = "Submission"
-name     = "Pre-Check"
-title    = "GitHub Actions CI"
-timecode = "01:00:53.232"
-enabled  = true
-notes    = "Pre-check and GitHub Actions introduced together; clear first use of the term"
+id          = "precheck"
+composition = "TTLowerThird"
+name        = "Pre-Check"
+title       = "GitHub Actions CI"
+timecode    = "01:00:46.232"
 
 [[cards]]
-id       = "drc"
-section  = "Submission"
-name     = "Design Rule Check"
-title    = "DRC"
-timecode = "01:01:08.748"
-enabled  = true
-notes    = "DRC explanation starts here (foundry manufacturability rules); term first spoken at 01:01:06 but explanation lands at 01:01:08"
-
-[[cards]]
-id       = "pull_request"
-section  = "Submission"
-name     = "Pull Request"
-title    = "Submission Process"
-timecode = "01:01:18.800"
-enabled  = true
-notes    = "PR concept introduced — 'submitting your design opens a pull request'"
-
-# ── Layout & density ──────────────────────────────────────────────────────────
-
-[[cards]]
-id       = "metal_fill"
-section  = "Layout"
-name     = "Metal Fill"
-title    = "Density Control"
-timecode = "01:01:57.588"
-enabled  = true
-notes    = "Visual moment — program fills empty areas with little squares; natural section break after DRC discussion"
+id          = "drc"
+composition = "TTLowerThird"
+name        = "Design Rule Check"
+title       = "DRC"
+timecode    = "01:01:04.048"
 
 # ── Chip architecture ─────────────────────────────────────────────────────────
 
 [[cards]]
-id       = "mux"
-section  = "Architecture"
-name     = "Multiplexer"
-title    = "MUX"
-timecode = "01:02:19.861"
-enabled  = true
-notes    = "'multiplexer, or a MUX' — key architecture term; switchboard analogy makes it a strong placement"
+id          = "outsideworld"
+composition = "TTTopicCard"
+text        = "Talking to the outside world"
+timecode    = "01:02:02.19"
 
 [[cards]]
-id       = "power_switch"
-section  = "Architecture"
-name     = "Power Switch"
-title    = "Per-Design Isolation"
-timecode = "01:02:37.003"
-enabled  = true
-notes    = "Each design has its own power switch — clear new sub-topic after MUX; ~17s gap is fine"
+id          = "mux"
+composition = "TTLowerThird"
+name        = "Multiplexer"
+title       = "MUX"
+timecode    = "01:02:17.861"
 
 [[cards]]
-id       = "formal_proof"
-section  = "Architecture"
-name     = "Formal Verification"
-title    = "Exclusive Enable"
-timecode = "01:03:19.712"
-enabled  = false
-notes    = "Interesting detail (mathematical proof no two designs active at once) but niche; enable if the MUX/power section needs more depth"
-
-[[cards]]
-id       = "rom"
-section  = "Architecture"
-name     = "Read-Only Memory"
-title    = "ROM"
-timecode = "01:03:25.843"
-enabled  = true
-notes    = "'create a ROM, or a read-only memory' — stores chip name and git commit; clear new concept"
+id          = "rom"
+composition = "TTLowerThird"
+name        = "Read-Only Memory"
+title       = "ROM"
+timecode    = "01:03:23.843"
 
 # ── Manufacturing ─────────────────────────────────────────────────────────────
 
 [[cards]]
-id       = "mpw"
-section  = "Manufacturing"
-name     = "Multi-Project Wafer"
-title    = "MPW"
-timecode = "01:04:17.645"
-enabled  = true
-notes    = "'multi-project wafer, or an MPW' — cost-sharing concept; clear section shift after chip layout visual"
+id          = "mpwtopic"
+composition = "TTTopicCard"
+text        = "Multi Project Wafers"
+timecode    = "01:03:52.06"
 
 [[cards]]
-id       = "ihp_130nm"
-section  = "Manufacturing"
-name     = "IHP 130nm Process"
-title    = "Process Node"
-timecode = "01:04:49.719"
-enabled  = true
-notes    = "IHP factory and 130nm process named explicitly; ~32s after MPW card"
-
-[[cards]]
-id       = "intermediary"
-section  = "Manufacturing"
-name     = "MPW Intermediary"
-title    = "Chip Foundry"
-timecode = "01:05:01.063"
-enabled  = true
-notes    = "Companies that aggregate designs before the factory (Chip Foundry, Wafer Space etc); ~12s after IHP card — tight but a distinct new concept"
+id          = "mpw"
+composition = "TTLowerThird"
+name        = "Multi-Project Wafer"
+title       = "MPW"
+timecode    = "01:04:14.645"
 
 # ── Call to action ────────────────────────────────────────────────────────────
 
 [[cards]]
 id          = "cta_explore"
-section     = "Outro"
 composition = "TTCallToAction"
 header      = "Explore Your Chip"
 line1       = "tinytapeout.com"
 line2       = "Which design is yours?"
 timecode    = "01:05:19.915"
-enabled     = true
-notes       = "Script explicitly says 'take a look at your chips page on the TinyTapeout website' — natural end-of-video CTA moment"

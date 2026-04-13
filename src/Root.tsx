@@ -4,6 +4,7 @@ import { LowerThirdVFD, getDuration, LowerThirdVFDProps, lowerThirdVFDSchema } f
 import { LowerThirdCallToAction, getDuration as getCtaDuration, LowerThirdCallToActionProps, lowerThirdCallToActionSchema } from './compositions/LowerThirdCallToAction';
 import { TTLowerThird, TTLowerThirdProps, ttLowerThirdSchema, calculateMetadata as calcTTLowerThird } from './compositions/TTLowerThird';
 import { TTCallToAction, TTCallToActionProps, ttCallToActionSchema, calculateMetadata as calcTTCallToAction } from './compositions/TTCallToAction';
+import { TTTopicCard, TTTopicCardProps, ttTopicCardSchema, calculateMetadata as calcTTTopicCard } from './compositions/TTTopicCard';
 import { Z2ATitleBar, Z2ATitleBarProps, z2ATitleBarSchema, calculateMetadata as calcZ2ATitleBar } from './compositions/Z2ATitleBar';
 import { Z2ATitleBarV2, Z2ATitleBarV2Props, z2ATitleBarV2Schema, calculateMetadataV2 as calcZ2ATitleBarV2 } from './compositions/Z2ATitleBarV2';
 import { Z2ALogoAnim, z2ALogoAnimSchema } from './compositions/Z2ALogoAnim';
@@ -63,6 +64,16 @@ export const RemotionRoot: React.FC = () => {
         width={1920}
         height={1080}
         defaultProps={{"header":"Try Tin","line1":"tinytapeout.com","line2":"Link in description","holdEnd":62}}
+      />
+      <Composition
+        id="TTTopicCard"
+        component={TTTopicCard}
+        calculateMetadata={calcTTTopicCard as CalculateMetadataFunction<TTTopicCardProps>}
+        schema={ttTopicCardSchema}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{"text":"Test Text","holdEnd":115,"vignetteStrength":83}}
       />
       <Composition
         id="Z2ATitleBar"

@@ -7,7 +7,7 @@ Usage:
     python render_titles.py --card drc         # render one card by id
     python render_titles.py --resolve          # render + insert into current Resolve timeline
     python render_titles.py --resolve --card drc
-    python render_titles.py --place-only       # place clips already in the 'remotion' bin
+    python render_titles.py --place            # place clips already in the 'remotion' bin
 
 Requirements:
     Python 3.11+  (uses built-in tomllib)
@@ -69,7 +69,7 @@ def render_card(card: dict, config: dict, out_dir: Path) -> Path:
 
     # Build props from whichever fields the card defines
     props: dict = {}
-    for key in ("name", "title", "header", "line1", "line2"):
+    for key in ("name", "title", "header", "line1", "line2", "text", "vignetteStrength"):
         if key in card:
             props[key] = card[key]
     if "hold_frames" in card:
@@ -289,7 +289,7 @@ def main():
     parser.add_argument("--config",     default="part1.toml", help="Path to the titles TOML file (e.g. part1.toml, part2.toml)")
     parser.add_argument("--card",       default=None,          help="Render only this card id")
     parser.add_argument("--resolve",    action="store_true",   help="Import clips into Resolve media pool and insert into timeline")
-    parser.add_argument("--place-only", action="store_true",   help="Place clips already in the 'remotion' bin onto the active timeline")
+    parser.add_argument("--place",      action="store_true",   help="Place clips already in the 'remotion' bin onto the active timeline")
     parser.add_argument("--no-render",  action="store_true",   help="Skip rendering; use existing files in output_dir")
     args = parser.parse_args()
 
@@ -324,7 +324,7 @@ def main():
             render_card(card, config, out_dir)
         print(f"\nDone. {len(cards)} clip(s) in {out_dir}/")
 
-    if args.place_only:
+    if args.place:
         place_from_bin(cards, config)
     elif args.resolve:
         insert_into_resolve(cards, config, out_dir)

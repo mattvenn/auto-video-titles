@@ -77,7 +77,7 @@ export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
     from: stripW, to: 0,
   });
   // Clamp exit to ≥0 so spring overshoot doesn't push logo off-screen
-  const logoX = frame < holdEnd ? logoXEntry : Math.max(0, logoXExit);
+  const logoX = Math.round(frame < holdEnd ? logoXEntry : Math.max(0, logoXExit));
 
   // ── Logo scale + opacity ──────────────────────────────────────────────────
   // Entry: spring 0 → 1. Exit: bloom (grow to 1.6×) + fade out.

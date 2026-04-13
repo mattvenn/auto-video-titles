@@ -78,7 +78,7 @@ export const TTCallToAction: React.FC<TTCallToActionProps> = ({
     config: { damping: CONFIG.exitSlideDamping, stiffness: CONFIG.slideStiffness },
     from: CONFIG.stripW, to: 0,
   });
-  const logoX = frame < holdEnd ? logoXEntry : Math.max(0, logoXExit);
+  const logoX = Math.round(frame < holdEnd ? logoXEntry : Math.max(0, logoXExit));
 
   // ── Logo scale + opacity ──────────────────────────────────────────────────
   const logoScaleRaw = spring({
