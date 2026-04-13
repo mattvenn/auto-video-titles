@@ -82,3 +82,5 @@ header      = "Explore Your Chip"
 line1       = "tinytapeout.com"
 line2       = "Which design is yours?"
 timecode    = "01:05:19.915"
+hold_frames = 100
+
