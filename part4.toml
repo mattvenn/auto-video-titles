@@ -1,0 +1,43 @@
+# Tiny Tapeout Lower-Third Title Cards
+# "Part 4 - Rinse and Repeat
+#
+# timecode: HH:MM:SS.mmm  (matches SRT source timestamps)
+
+[config]
+output_dir      = "out/part4"
+composition     = "TTLowerThird"
+timeline_offset = "00:00:00.000"
+
+# ── Intro ─────────────────────────────────────────────────────────────────────
+
+[[cards]]
+id         = "intro"
+title      = "Part 4"
+extra_text = "Rinse and Repeat"
+timecode   = "01:00:02.03"
+
+[[cards]]
+id          = "wafers"
+composition = "TTTopicCard"
+text        = "Waiting for Wafers"
+timecode    = "01:02:13.22"
+
+[[cards]]
+id         = "hotlot"
+title      = "Hot Lot"
+timecode   = "01:02:46.23"
+
+[[cards]]
+id          = "designdocs"
+composition = "TTTopicCard"
+text        = "Design Documentation"
+timecode    = "01:03:15.22"
+
+[[cards]]
+id          = "cta_docs"
+composition = "TTCallToAction"
+header      = "Update your documentation"
+line1       = ""
+line2       = "Follow the link below"
+timecode    = "01:04:33.00"
+hold_frames = 120
