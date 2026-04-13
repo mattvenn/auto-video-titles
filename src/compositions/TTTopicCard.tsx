@@ -96,7 +96,7 @@ export const TTTopicCard: React.FC<TTTopicCardProps> = ({ text, holdEnd, vignett
 
   // Font size: scale down if text would overflow the strip
   const availableWidth = CONFIG.stripW - CONFIG.textPadding * 2;
-  const fontSize = Math.min(CONFIG.maxFontSize, Math.floor(availableWidth / (text.length * 0.58)));
+  const fontSize = Math.min(CONFIG.maxFontSize, Math.floor(availableWidth / ((text.length + 1) * 0.58)));
 
   const stripTop      = (CONFIG.logoH - CONFIG.stripH) / 2;
   const containerLeft = (1920 - CONFIG.stripW - CONFIG.logoW) / 2;
