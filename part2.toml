@@ -31,10 +31,10 @@ title    = "Graphic Data System"
 timecode = "01:01:17.08"
 
 [[cards]]
-id       = "swtohw"
+id          = "swtohw"
 composition = "TTTopicCard"
-text    = "From software to hardware"
-timecode = "01:01:30.03"
+text        = "From software to hardware"
+timecode    = "01:01:30.03"
 
 [[cards]]
 id       = "subfab"

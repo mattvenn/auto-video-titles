@@ -43,16 +43,28 @@ except ImportError:
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def timecode_to_frames(tc: str, fps: int) -> int:
-    """Convert 'HH:MM:SS.mmm' (SRT-style) to an integer frame number."""
+    """Convert a timecode string to an integer frame number.
+
+    Accepts two formats:
+      HH:MM:SS.mmm  — SRT-style milliseconds (3 decimal digits)
+      HH:MM:SS.FF   — frame-number suffix    (1–2 decimal digits)
+    """
     tc = tc.replace(",", ".")          # accept SRT comma format too
     h, m, rest = tc.split(":", 2)
+    whole_seconds = int(h) * 3600 + int(m) * 60
     if "." in rest:
-        s, ms_str = rest.split(".", 1)
-        ms = int(ms_str.ljust(3, "0")[:3])
+        s, sub = rest.split(".", 1)
+        whole_seconds += int(s)
+        if len(sub) <= 2:
+            # e.g. .06 → frame 6
+            return whole_seconds * fps + int(sub)
+        else:
+            # e.g. .232 → 232 ms
+            ms = int(sub.ljust(3, "0")[:3])
+            return round((whole_seconds * 1000 + ms) * fps / 1000)
     else:
-        s, ms = rest, 0
-    total_ms = (int(h) * 3600 + int(m) * 60 + int(s)) * 1000 + ms
-    return round(total_ms * fps / 1000)
+        whole_seconds += int(rest)
+        return whole_seconds * fps
 
 
 def render_card(card: dict, config: dict, out_dir: Path) -> Path:
@@ -125,9 +137,16 @@ def get_resolve():
     return resolve
 
 
+def _find_or_create_bin(media_pool, parent, name):
+    """Return the named sub-bin under parent, creating it if absent."""
+    existing = next((f for f in parent.GetSubFolderList() if f.GetName() == name), None)
+    return existing if existing is not None else media_pool.AddSubFolder(parent, name)
+
+
 def insert_into_resolve(cards: list[dict], config: dict, out_dir: Path):
-    """Import rendered PNG sequences into a 'remotion' bin and insert into the active timeline."""
-    fps = config["fps"]
+    """Import rendered PNG sequences into a 'remotion/<part>' bin and insert into the active timeline."""
+    fps      = config["fps"]
+    part_name = Path(config["output_dir"]).name   # e.g. "part1"
 
     resolve    = get_resolve()
     project    = resolve.GetProjectManager().GetCurrentProject()
@@ -138,16 +157,12 @@ def insert_into_resolve(cards: list[dict], config: dict, out_dir: Path):
         print("ERROR: No timeline is currently open in DaVinci Resolve.")
         sys.exit(1)
 
-    # ── Create / find the 'remotion' bin ─────────────────────────────────────
-    root = media_pool.GetRootFolder()
-    remotion_bin = next(
-        (f for f in root.GetSubFolderList() if f.GetName() == "remotion"),
-        None,
-    )
-    if remotion_bin is None:
-        remotion_bin = media_pool.AddSubFolder(root, "remotion")
-    media_pool.SetCurrentFolder(remotion_bin)
-    print(f"\nUsing media pool bin: 'remotion'")
+    # ── Create / find remotion/<part> bin ────────────────────────────────────
+    root         = media_pool.GetRootFolder()
+    remotion_bin = _find_or_create_bin(media_pool, root, "remotion")
+    part_bin     = _find_or_create_bin(media_pool, remotion_bin, part_name)
+    media_pool.SetCurrentFolder(part_bin)
+    print(f"\nUsing media pool bin: 'remotion/{part_name}'")
 
     # ── Import PNG sequences into that bin ───────────────────────────────────
     paths = []
@@ -205,8 +220,9 @@ def insert_into_resolve(cards: list[dict], config: dict, out_dir: Path):
 
 
 def place_from_bin(cards: list[dict], config: dict):
-    """Place clips already in the 'remotion' media pool bin onto the active timeline."""
-    fps = config["fps"]
+    """Place clips already in the 'remotion/<part>' media pool bin onto the active timeline."""
+    fps       = config["fps"]
+    part_name = Path(config["output_dir"]).name   # e.g. "part1"
 
     resolve    = get_resolve()
     project    = resolve.GetProjectManager().GetCurrentProject()
@@ -217,24 +233,25 @@ def place_from_bin(cards: list[dict], config: dict):
         print("ERROR: No timeline is currently open.")
         sys.exit(1)
 
-    # Find the remotion bin
+    # Find remotion/<part> bin
     root = media_pool.GetRootFolder()
-    remotion_bin = next(
-        (f for f in root.GetSubFolderList() if f.GetName() == "remotion"),
-        None,
-    )
+    remotion_bin = next((f for f in root.GetSubFolderList() if f.GetName() == "remotion"), None)
     if remotion_bin is None:
         print("ERROR: No 'remotion' bin found in media pool. Run --resolve first.")
         sys.exit(1)
+    part_bin = next((f for f in remotion_bin.GetSubFolderList() if f.GetName() == part_name), None)
+    if part_bin is None:
+        print(f"ERROR: No 'remotion/{part_name}' bin found. Run --resolve first.")
+        sys.exit(1)
 
-    # Index clips in the bin by card id (parent directory name of the first frame)
-    all_clips = remotion_bin.GetClipList()
+    # Index clips in the part bin by card id
+    all_clips = part_bin.GetClipList()
     bin_clips: dict[str, object] = {}
     for item in all_clips:
         clip_path = item.GetClipProperty("File Path") or ""
         parent = Path(clip_path).parent.name if clip_path else item.GetName().rsplit(".", 1)[0]
         bin_clips[parent] = item
-    print(f"Found {len(bin_clips)} clip(s) in 'remotion' bin: {list(bin_clips.keys())}")
+    print(f"Found {len(bin_clips)} clip(s) in 'remotion/{part_name}': {list(bin_clips.keys())}")
 
     # Add a new video track named 'remotion'
     project.SetCurrentTimeline(timeline)
@@ -276,7 +293,7 @@ def place_from_bin(cards: list[dict], config: dict):
         return
 
     clip_infos.sort(key=lambda c: c["recordFrame"])
-    media_pool.SetCurrentFolder(remotion_bin)
+    media_pool.SetCurrentFolder(part_bin)
 
     ok = media_pool.AppendToTimeline(clip_infos)
     print(f"AppendToTimeline: {'OK' if ok else 'FAILED'} — {len(clip_infos)} clip(s)")

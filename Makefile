@@ -17,5 +17,6 @@ clean:
 	rm -rf out/
 
 render-card:
+	rm -rf $(OUT)
 	mkdir -p $(OUT)
 	node render_frames.mjs --out=$(OUT) --props=$(PROPS_FILE) --composition=$(COMPOSITION)
