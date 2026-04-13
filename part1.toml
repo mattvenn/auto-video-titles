@@ -40,7 +40,7 @@ timecode    = "01:01:04.048"
 [[cards]]
 id          = "outsideworld"
 composition = "TTTopicCard"
-text        = "Talking to the outside world"
+text        = "Talking to the Outside World"
 timecode    = "01:02:02.19"
 
 [[cards]]

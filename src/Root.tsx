@@ -73,7 +73,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"text":"Test Text","holdEnd":85,"vignetteStrength":83}}
+        defaultProps={{"text":"Test Textcdfdddddd dabcd","holdEnd":85,"vignetteStrength":83}}
       />
       <Composition
         id="Z2ATitleBar"
