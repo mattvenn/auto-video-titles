@@ -11,6 +11,12 @@ Tiny Tapeout is widely considered indispensable for modern IC design educationâ€
 
 # Colours
 
+pink fc9f9f
+blue 040371
+yellow fef244
+hot pink f82381
+cyan 3dfef7
+
 colours: tt_colours.png
 
 logo, scalable b&w svg: ttlogo.svg
