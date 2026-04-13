@@ -30,7 +30,7 @@ const CONFIG = {
   popStart:        5,   // logo pops in
   slideStart:      22,  // logo slides right
   holdEnd:         172, // exit begins
-  exitSlideFrames: 40,  // enough frames for the spring to settle
+  exitSlideFrames: 35,  // enough frames for the spring to settle
   exitPopFrames:   12,  // logo pops out
 
   // Spring feel (from shared TT brand tokens)
@@ -81,12 +81,15 @@ export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
 
   // ── Logo scale + opacity ──────────────────────────────────────────────────
   // Entry: spring 0 → 1. Exit: bloom (grow to 1.6×) + fade out.
-  const logoScaleEntry = spring({
+  const logoScaleRaw = spring({
     frame: frame - CONFIG.popStart,
     fps,
     config: { damping: CONFIG.popDamping, stiffness: CONFIG.popStiffness },
     from: 0, to: 1,
   });
+  // Allow overshoot above 1, but once the spring has peaked and is settling back,
+  // clamp to ≥1 so it never undershoots below the target size.
+  const logoScaleEntry = frame >= CONFIG.popStart + 7 ? Math.max(1, logoScaleRaw) : logoScaleRaw;
   const logoScaleExit = interpolate(
     frame,
     [exitSlideEnd, exitSlideEnd + CONFIG.exitPopFrames],

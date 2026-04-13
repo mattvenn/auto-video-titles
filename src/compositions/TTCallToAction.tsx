@@ -34,7 +34,7 @@ const CONFIG = {
   popStart:        5,
   slideStart:      22,
   holdEnd:         172,
-  exitSlideFrames: 40,  // enough frames for the spring to settle
+  exitSlideFrames: 35,  // enough frames for the spring to settle
   exitPopFrames:   8,
 
   // Spring feel (from shared TT brand tokens)
@@ -81,12 +81,13 @@ export const TTCallToAction: React.FC<TTCallToActionProps> = ({
   const logoX = frame < holdEnd ? logoXEntry : Math.max(0, logoXExit);
 
   // ── Logo scale + opacity ──────────────────────────────────────────────────
-  const logoScaleEntry = spring({
+  const logoScaleRaw = spring({
     frame: frame - CONFIG.popStart,
     fps,
     config: { damping: CONFIG.popDamping, stiffness: CONFIG.popStiffness },
     from: 0, to: 1,
   });
+  const logoScaleEntry = frame >= CONFIG.popStart + 7 ? Math.max(1, logoScaleRaw) : logoScaleRaw;
   const logoScaleExit = interpolate(
     frame,
     [exitSlideEnd, exitSlideEnd + CONFIG.exitPopFrames],
