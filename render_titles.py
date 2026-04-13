@@ -145,7 +145,6 @@ def _find_or_create_bin(media_pool, parent, name):
 
 def insert_into_resolve(cards: list[dict], config: dict, out_dir: Path):
     """Import rendered PNG sequences into a 'remotion/<part>' bin and insert into the active timeline."""
-    fps      = config["fps"]
     part_name = Path(config["output_dir"]).name   # e.g. "part1"
 
     resolve    = get_resolve()
@@ -221,7 +220,6 @@ def insert_into_resolve(cards: list[dict], config: dict, out_dir: Path):
 
 def place_from_bin(cards: list[dict], config: dict):
     """Place clips already in the 'remotion/<part>' media pool bin onto the active timeline."""
-    fps       = config["fps"]
     part_name = Path(config["output_dir"]).name   # e.g. "part1"
 
     resolve    = get_resolve()

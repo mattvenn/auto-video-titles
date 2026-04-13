@@ -38,8 +38,8 @@ const CONFIG = {
 };
 
 export const ttLowerThirdSchema = z.object({
-  extra_text: z.string(),
-  title:      z.string().optional(),
+  title:      z.string(),
+  extra_text: z.string().optional(),
   holdEnd:    z.number().int().min(1),
 });
 
@@ -50,21 +50,21 @@ export const calculateMetadata: CalculateMetadataFunction<TTLowerThirdProps> = (
 });
 
 export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
-  extra_text,
   title,
+  extra_text,
   holdEnd,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // When no title, scale name up to fill the vertical space both lines would occupy
+  // When no extra_text, scale title up to fill the vertical space both lines would occupy
   const NAME_LINE_HEIGHT = 1.1;
   const TITLE_LINE_HEIGHT = 1.2;
   const combinedTextH = CONFIG.nameSize * NAME_LINE_HEIGHT + 5 + CONFIG.titleSize * TITLE_LINE_HEIGHT;
-  const nameFontSize = title ? CONFIG.nameSize : Math.round(combinedTextH / NAME_LINE_HEIGHT);
+  const titleFontSize = extra_text ? CONFIG.nameSize : Math.round(combinedTextH / NAME_LINE_HEIGHT);
 
   // ── Dynamic strip width — sized to the longest line of text ──────────────
-  const longestChars = Math.max(extra_text.length * nameFontSize, (title?.length ?? 0) * CONFIG.titleSize);
+  const longestChars = Math.max(title.length * titleFontSize, (extra_text?.length ?? 0) * CONFIG.titleSize);
   const stripW = Math.round(longestChars * 0.62) + CONFIG.textPadding * 2 + 20;
 
   const exitSlideEnd = holdEnd + CONFIG.exitSlideFrames;
@@ -148,24 +148,24 @@ export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
             <div style={{
               fontFamily: CONFIG.fontFamily,
               fontWeight: 700,
-              fontSize:   nameFontSize,
+              fontSize:   titleFontSize,
               color:      CONFIG.textColor,
               lineHeight: NAME_LINE_HEIGHT,
               whiteSpace: 'nowrap',
             }}>
-              {extra_text}
+              {title}
             </div>
-            {title && (
+            {extra_text && (
               <div style={{
                 fontFamily: CONFIG.fontFamily,
                 fontWeight: 600,
                 fontSize:   CONFIG.titleSize,
                 color:      CONFIG.subtitleColor,
-                lineHeight: 1.2,
+                lineHeight: TITLE_LINE_HEIGHT,
                 whiteSpace: 'nowrap',
                 marginTop:  5,
               }}>
-                {title}
+                {extra_text}
               </div>
             )}
           </div>

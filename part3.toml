@@ -1,5 +1,5 @@
 # Tiny Tapeout Lower-Third Title Cards
-# "Part 3 - Welcome to the Fab" — Zero to ASIC Course
+# "Part 3 - Lithography
 #
 # timecode: HH:MM:SS.mmm  (matches SRT source timestamps)
 
@@ -12,21 +12,26 @@ timeline_offset = "00:00:00.000"
 
 [[cards]]
 id         = "intro"
-title      = "Part 2"
-extra_text = "Welcome to the fab!"
-timecode   = "01:00:01.21"
+title      = "Part 3"
+extra_text = "Photo Lithography"
+timecode   = "01:00:07.09"
 
 [[cards]]
-id          = "swtohw"
+id          = "photolithography"
+title       = "Photo Lithography"
+timecode    = "01:01:23.09"
+
+[[cards]]
+id          = "buildingmosfet"
 composition = "TTTopicCard"
-text        = "From software to hardware"
-timecode    = "01:01:30.03"
+text        = "Building a MOSFET"
+timecode    = "01:01:39.15"
 
 [[cards]]
-id          = "cta_3d_viewer"
+id          = "cta_siliwiz"
 composition = "TTCallToAction"
-header      = "Try the 3D Viewer"
-line1       = "➡️ tinytapeout.com/chips"
-line2       = "Find your design, then click 'Open in 3D viewer'"
-timecode    = "01:04:33.081"
+header      = "SiliWiz"
+line1       = "➡️ tinytapeout.com/siliwiz"
+line2       = "Become a Silicon Wizard"
+timecode    = "01:04:08.08"
 hold_frames = 120

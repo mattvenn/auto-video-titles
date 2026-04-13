@@ -7,27 +7,26 @@
 srt_file        = "part 2 - welcome to the fab copy.srt"
 output_dir      = "out/part2"
 composition     = "TTLowerThird"
-fps             = 30
 timeline_offset = "00:00:00.000"
 
 # ── Intro ─────────────────────────────────────────────────────────────────────
 
 [[cards]]
 id       = "intro"
-extra_text = "Part 2"
-title    = "Welcome to the fab!"
+title    = "Part 2"
+extra_text = "Welcome to the fab!"
 timecode = "01:00:01.21"
 
 [[cards]]
 id       = "pdk"
-extra_text = "PDK"
-title    = "Process Design Kit"
+title    = "PDK"
+extra_text = "Process Design Kit"
 timecode = "01:00:24.09"
 
 [[cards]]
 id       = "gds"
-extra_text = "GDS"
-title    = "Graphic Data System"
+title    = "GDS"
+extra_text = "Graphic Data System"
 timecode = "01:01:17.08"
 
 [[cards]]
@@ -37,10 +36,10 @@ text        = "From software to hardware"
 timecode    = "01:01:30.03"
 
 [[cards]]
-id       = "subfab"
-name       = "Sub Fab"
-title     = "Underneath the cleanroom"
-timecode = "01:02:52.15"
+id         = "subfab"
+title      = "Sub Fab"
+extra_text = "Underneath the cleanroom"
+timecode   = "01:02:52.15"
 
 [[cards]]
 id          = "cleantopic"

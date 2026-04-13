@@ -7,7 +7,6 @@
 srt_file        = "part 1 - you submitted!.srt"
 output_dir      = "out/part1"
 composition     = "TTLowerThird"
-fps             = 30
 timeline_offset = "00:00:00.000"
 
 # ── Presenter ─────────────────────────────────────────────────────────────────
@@ -15,8 +14,8 @@ timeline_offset = "00:00:00.000"
 [[cards]]
 id          = "intro"
 composition = "TTLowerThird"
-extra_text  = "Part 1"
-title       = "You submitted, what happens next?"
+title       = "Part 1"
+extra_text  = "You submitted, what happens next?"
 timecode    = "01:00:01.21"
 
 
@@ -25,15 +24,15 @@ timecode    = "01:00:01.21"
 [[cards]]
 id          = "precheck"
 composition = "TTLowerThird"
-extra_text  = "Pre-Check"
-title       = "GitHub Actions CI"
+title       = "Pre-Check"
+extra_text  = "GitHub Actions CI"
 timecode    = "01:00:46.232"
 
 [[cards]]
 id          = "drc"
 composition = "TTLowerThird"
-extra_text  = "Design Rule Check"
-title       = "DRC"
+title       = "Design Rule Check"
+extra_text  = "DRC"
 timecode    = "01:01:04.048"
 
 # ── Chip architecture ─────────────────────────────────────────────────────────
@@ -47,15 +46,15 @@ timecode    = "01:02:02.19"
 [[cards]]
 id          = "mux"
 composition = "TTLowerThird"
-extra_text  = "Multiplexer"
-title       = "MUX"
+title       = "Multiplexer"
+extra_text  = "MUX"
 timecode    = "01:02:17.861"
 
 [[cards]]
 id          = "rom"
 composition = "TTLowerThird"
-extra_text  = "Read-Only Memory"
-title       = "ROM"
+title       = "Read-Only Memory"
+extra_text  = "ROM"
 timecode    = "01:03:23.843"
 
 # ── Manufacturing ─────────────────────────────────────────────────────────────
@@ -69,8 +68,8 @@ timecode    = "01:03:52.06"
 [[cards]]
 id          = "mpw"
 composition = "TTLowerThird"
-extra_text  = "Multi-Project Wafer"
-title       = "MPW"
+title       = "Multi-Project Wafer"
+extra_text  = "MPW"
 timecode    = "01:04:14.645"
 
 # ── Call to action ────────────────────────────────────────────────────────────
@@ -83,4 +82,3 @@ line1       = "➡️ tinytapeout.com/chips"
 line2       = "Which design is yours?"
 timecode    = "01:05:19.915"
 hold_frames = 100
-
