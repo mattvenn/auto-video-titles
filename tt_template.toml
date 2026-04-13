@@ -1,0 +1,32 @@
+# Tiny Tapeout Lower-Third Title Cards
+# "Part 3 - Welcome to the Fab" — Zero to ASIC Course
+#
+# timecode: HH:MM:SS.mmm  (matches SRT source timestamps)
+
+[config]
+output_dir      = "out/part3"
+composition     = "TTLowerThird"
+timeline_offset = "00:00:00.000"
+
+# ── Intro ─────────────────────────────────────────────────────────────────────
+
+[[cards]]
+id       = "intro"
+name     = "Part 2"
+title    = "Welcome to the fab!"
+timecode = "01:00:01.21"
+
+[[cards]]
+id          = "swtohw"
+composition = "TTTopicCard"
+text        = "From software to hardware"
+timecode    = "01:01:30.03"
+
+[[cards]]
+id          = "cta_3d_viewer"
+composition = "TTCallToAction"
+header      = "Try the 3D Viewer"
+line1       = "➡️ tinytapeout.com/chips"
+line2       = "Find your design, then click 'Open in 3D viewer'"
+timecode    = "01:04:33.081"
+hold_frames = 120

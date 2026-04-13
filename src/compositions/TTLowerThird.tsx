@@ -39,7 +39,7 @@ const CONFIG = {
 
 export const ttLowerThirdSchema = z.object({
   name:    z.string(),
-  title:   z.string(),
+  title:   z.string().optional(),
   holdEnd: z.number().int().min(1),
 });
 
@@ -57,8 +57,14 @@ export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  // When no title, scale name up to fill the vertical space both lines would occupy
+  const NAME_LINE_HEIGHT = 1.1;
+  const TITLE_LINE_HEIGHT = 1.2;
+  const combinedTextH = CONFIG.nameSize * NAME_LINE_HEIGHT + 5 + CONFIG.titleSize * TITLE_LINE_HEIGHT;
+  const nameFontSize = title ? CONFIG.nameSize : Math.round(combinedTextH / NAME_LINE_HEIGHT);
+
   // ── Dynamic strip width — sized to the longest line of text ──────────────
-  const longestChars = Math.max(name.length * CONFIG.nameSize, title.length * CONFIG.titleSize);
+  const longestChars = Math.max(name.length * nameFontSize, (title?.length ?? 0) * CONFIG.titleSize);
   const stripW = Math.round(longestChars * 0.62) + CONFIG.textPadding * 2 + 20;
 
   const exitSlideEnd = holdEnd + CONFIG.exitSlideFrames;
@@ -142,24 +148,26 @@ export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
             <div style={{
               fontFamily: CONFIG.fontFamily,
               fontWeight: 700,
-              fontSize:   CONFIG.nameSize,
+              fontSize:   nameFontSize,
               color:      CONFIG.textColor,
-              lineHeight: 1.1,
+              lineHeight: NAME_LINE_HEIGHT,
               whiteSpace: 'nowrap',
             }}>
               {name}
             </div>
-            <div style={{
-              fontFamily: CONFIG.fontFamily,
-              fontWeight: 600,
-              fontSize:   CONFIG.titleSize,
-              color:      CONFIG.subtitleColor,
-              lineHeight: 1.2,
-              whiteSpace: 'nowrap',
-              marginTop:  5,
-            }}>
-              {title}
-            </div>
+            {title && (
+              <div style={{
+                fontFamily: CONFIG.fontFamily,
+                fontWeight: 600,
+                fontSize:   CONFIG.titleSize,
+                color:      CONFIG.subtitleColor,
+                lineHeight: 1.2,
+                whiteSpace: 'nowrap',
+                marginTop:  5,
+              }}>
+                {title}
+              </div>
+            )}
           </div>
         </div>
 
