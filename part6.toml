@@ -1,0 +1,69 @@
+# Tiny Tapeout Lower-Third Title Cards
+# "Part 6 - Does it work
+#
+# timecode: HH:MM:SS.mmm  (matches SRT source timestamps)
+
+[config]
+output_dir      = "out/part6"
+composition     = "TTLowerThird"
+timeline_offset = "00:00:00.000"
+
+# ── Intro ─────────────────────────────────────────────────────────────────────
+
+[[cards]]
+id         = "intro"
+title      = "Part 6"
+extra_text = "Test your design!"
+timecode   = "01:00:03.16"
+
+[[cards]]
+id          = "commander"
+text        = "Commander App"
+timecode    = "01:00:45.03"
+
+[[cards]]
+id          = "cta_track"
+composition = "TTCallToAction"
+header      = "Track your order"
+line1       = ""
+line2       = "➡️ app.tinytapeout.com/orders"
+timecode    = "01:00:09.15"
+hold_frames = 120
+
+[[cards]]
+id          = "cta_demoboard"
+composition = "TTCallToAction"
+header      = "Get started with the Demoboard"
+line1       = ""
+line2       = "➡️ tinytapeout.com/guides/get-started-demoboard-etr"
+timecode    = "01:01:40.15"
+hold_frames = 120
+
+[[cards]]
+id         = "help"
+title      = "Get help from the community"
+extra_text = "➡️ tinytapeout.com/discord"
+timecode   = "01:01:48.03"
+
+[[cards]]
+id         = "party"
+title      = "Bringup Party!"
+timecode   = "01:01:58.03"
+
+[[cards]]
+id          = "microscope"
+composition = "TTTopicCard"
+text        = "Under the Microscope"
+timecode    = "01:02:17.15"
+
+[[cards]]
+id          = "tt06"
+composition = "TTTopicCard"
+text        = "TT06"
+timecode    = "01:03:26.15"
+
+[[cards]]
+id          = "tt07"
+composition = "TTTopicCard"
+text        = "TT07"
+timecode    = "01:03:42.17"

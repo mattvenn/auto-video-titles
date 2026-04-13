@@ -31,7 +31,7 @@ timecode   = "01:01:54.05"
 [[cards]]
 id          = "swtohw"
 composition = "TTTopicCard"
-text        = "The demoboard"
+text        = "The Demoboard"
 timecode    = "01:02:15.21"
 
 [[cards]]
