@@ -18,7 +18,7 @@ timecode   = "01:00:03.16"
 
 [[cards]]
 id          = "commander"
-text        = "Commander App"
+title       = "Commander App"
 timecode    = "01:00:45.03"
 
 [[cards]]
@@ -39,11 +39,6 @@ line2       = "➡️ tinytapeout.com/guides/get-started-demoboard-etr"
 timecode    = "01:01:40.15"
 hold_frames = 120
 
-[[cards]]
-id         = "help"
-title      = "Get help from the community"
-extra_text = "➡️ tinytapeout.com/discord"
-timecode   = "01:01:48.03"
 
 [[cards]]
 id         = "party"
@@ -58,12 +53,10 @@ timecode    = "01:02:17.15"
 
 [[cards]]
 id          = "tt06"
-composition = "TTTopicCard"
-text        = "TT06"
+title        = "TT06"
 timecode    = "01:03:26.15"
 
 [[cards]]
 id          = "tt07"
-composition = "TTTopicCard"
-text        = "TT07"
+title        = "TT07"
 timecode    = "01:03:42.17"

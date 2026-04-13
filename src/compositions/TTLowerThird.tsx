@@ -64,7 +64,10 @@ export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
   const titleFontSize = extra_text ? CONFIG.nameSize : Math.round(combinedTextH / NAME_LINE_HEIGHT);
 
   // ── Dynamic strip width — sized to the longest line of text ──────────────
-  const longestChars = Math.max(title.length * titleFontSize, (extra_text?.length ?? 0) * CONFIG.titleSize);
+  // Add extra char widths when the title drives strip width (no extra_text, or extra_text is shorter)
+  const titleDrivesWidth = !extra_text || extra_text.length < title.length;
+  const titleChars = titleDrivesWidth ? title.length + 2 : title.length;
+  const longestChars = Math.max(titleChars * titleFontSize, (extra_text?.length ?? 0) * CONFIG.titleSize);
   const stripW = Math.round(longestChars * 0.62) + CONFIG.textPadding * 2 + 20;
 
   const exitSlideEnd = holdEnd + CONFIG.exitSlideFrames;
