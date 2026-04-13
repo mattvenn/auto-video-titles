@@ -15,7 +15,7 @@ timeline_offset = "00:00:00.000"
 [[cards]]
 id          = "intro"
 composition = "TTLowerThird"
-name        = "Part 1"
+extra_text  = "Part 1"
 title       = "You submitted, what happens next?"
 timecode    = "01:00:01.21"
 
@@ -25,14 +25,14 @@ timecode    = "01:00:01.21"
 [[cards]]
 id          = "precheck"
 composition = "TTLowerThird"
-name        = "Pre-Check"
+extra_text  = "Pre-Check"
 title       = "GitHub Actions CI"
 timecode    = "01:00:46.232"
 
 [[cards]]
 id          = "drc"
 composition = "TTLowerThird"
-name        = "Design Rule Check"
+extra_text  = "Design Rule Check"
 title       = "DRC"
 timecode    = "01:01:04.048"
 
@@ -47,14 +47,14 @@ timecode    = "01:02:02.19"
 [[cards]]
 id          = "mux"
 composition = "TTLowerThird"
-name        = "Multiplexer"
+extra_text  = "Multiplexer"
 title       = "MUX"
 timecode    = "01:02:17.861"
 
 [[cards]]
 id          = "rom"
 composition = "TTLowerThird"
-name        = "Read-Only Memory"
+extra_text  = "Read-Only Memory"
 title       = "ROM"
 timecode    = "01:03:23.843"
 
@@ -69,7 +69,7 @@ timecode    = "01:03:52.06"
 [[cards]]
 id          = "mpw"
 composition = "TTLowerThird"
-name        = "Multi-Project Wafer"
+extra_text  = "Multi-Project Wafer"
 title       = "MPW"
 timecode    = "01:04:14.645"
 

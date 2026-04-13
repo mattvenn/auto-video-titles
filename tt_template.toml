@@ -12,7 +12,7 @@ timeline_offset = "00:00:00.000"
 
 [[cards]]
 id       = "intro"
-name     = "Part 2"
+extra_text = "Part 2"
 title    = "Welcome to the fab!"
 timecode = "01:00:01.21"
 

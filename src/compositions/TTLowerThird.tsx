@@ -38,9 +38,9 @@ const CONFIG = {
 };
 
 export const ttLowerThirdSchema = z.object({
-  name:    z.string(),
-  title:   z.string().optional(),
-  holdEnd: z.number().int().min(1),
+  extra_text: z.string(),
+  title:      z.string().optional(),
+  holdEnd:    z.number().int().min(1),
 });
 
 export type TTLowerThirdProps = z.infer<typeof ttLowerThirdSchema>;
@@ -50,7 +50,7 @@ export const calculateMetadata: CalculateMetadataFunction<TTLowerThirdProps> = (
 });
 
 export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
-  name,
+  extra_text,
   title,
   holdEnd,
 }) => {
@@ -64,7 +64,7 @@ export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
   const nameFontSize = title ? CONFIG.nameSize : Math.round(combinedTextH / NAME_LINE_HEIGHT);
 
   // ── Dynamic strip width — sized to the longest line of text ──────────────
-  const longestChars = Math.max(name.length * nameFontSize, (title?.length ?? 0) * CONFIG.titleSize);
+  const longestChars = Math.max(extra_text.length * nameFontSize, (title?.length ?? 0) * CONFIG.titleSize);
   const stripW = Math.round(longestChars * 0.62) + CONFIG.textPadding * 2 + 20;
 
   const exitSlideEnd = holdEnd + CONFIG.exitSlideFrames;
@@ -153,7 +153,7 @@ export const TTLowerThird: React.FC<TTLowerThirdProps> = ({
               lineHeight: NAME_LINE_HEIGHT,
               whiteSpace: 'nowrap',
             }}>
-              {name}
+              {extra_text}
             </div>
             {title && (
               <div style={{

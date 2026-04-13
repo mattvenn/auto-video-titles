@@ -14,19 +14,19 @@ timeline_offset = "00:00:00.000"
 
 [[cards]]
 id       = "intro"
-name     = "Part 2"
+extra_text = "Part 2"
 title    = "Welcome to the fab!"
 timecode = "01:00:01.21"
 
 [[cards]]
 id       = "pdk"
-name     = "PDK"
+extra_text = "PDK"
 title    = "Process Design Kit"
 timecode = "01:00:24.09"
 
 [[cards]]
 id       = "gds"
-name     = "GDS"
+extra_text = "GDS"
 title    = "Graphic Data System"
 timecode = "01:01:17.08"
 

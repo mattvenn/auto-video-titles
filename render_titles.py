@@ -74,14 +74,14 @@ def render_card(card: dict, config: dict, out_dir: Path) -> Path:
 
     section = card.get("section", "")
     label   = f"[{section}] " if section else ""
-    preview = " / ".join(card[k] for k in ("header", "name", "line1", "title", "line2") if k in card)
+    preview = " / ".join(card[k] for k in ("header", "extra_text", "line1", "title", "line2") if k in card)
     print(f"  → {label}{card_id}  |  {preview}")
 
     composition = card.get("composition", config["composition"])
 
     # Build props from whichever fields the card defines
     props: dict = {}
-    for key in ("name", "title", "header", "line1", "line2", "text", "vignetteStrength"):
+    for key in ("extra_text", "title", "header", "line1", "line2", "text", "vignetteStrength"):
         if key in card:
             props[key] = card[key]
     if "hold_frames" in card:
