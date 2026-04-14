@@ -108,6 +108,7 @@ export const TTTopicCard: React.FC<TTTopicCardProps> = ({ text, holdEnd, vignett
       {/* ── Animated background ─────────────────────────────────────────── */}
       <OffthreadVideo
         src={staticFile('tt_card_background.mp4')}
+        delayRenderTimeoutInMilliseconds={60000}
         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
       />
 
