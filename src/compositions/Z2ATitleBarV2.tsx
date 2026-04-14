@@ -9,7 +9,7 @@ import {
   staticFile,
   useCurrentFrame,
   useVideoConfig,
-  Video,
+  OffthreadVideo,
 } from 'remotion';
 import { z } from 'zod';
 
@@ -240,9 +240,10 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
       {/* ── Intro background (video + logo anim) ─────────────────────────────── */}
       {showIntroBackground && (
         <div style={{ position: 'absolute', inset: 0 }}>
-          <Video
+          <OffthreadVideo
             src={staticFile('microchip-background-h264.mp4')}
             startFrom={introVideoStartFrom}
+            delayRenderTimeoutInMilliseconds={60000}
             style={{
               width:           '100%',
               height:          '100%',

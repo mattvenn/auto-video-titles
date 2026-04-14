@@ -2,7 +2,7 @@ import React from 'react';
 import {
   AbsoluteFill,
   CalculateMetadataFunction,
-  Video,
+  OffthreadVideo,
   interpolate,
   spring,
   staticFile,
@@ -128,9 +128,10 @@ export const Z2AIntro: React.FC<Z2AIntroProps> = ({
 
       {/* ── Background video ─────────────────────────────────────────────── */}
       <div style={{ position: 'absolute', inset: 0, opacity: bgOpacity }}>
-        <Video
+        <OffthreadVideo
           src={staticFile('microchip-background-h264.mp4')}
           startFrom={videoStartFrom}
+          delayRenderTimeoutInMilliseconds={60000}
           style={{
             width:           '100%',
             height:          '100%',
