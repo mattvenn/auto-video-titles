@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, Audio, CalculateMetadataFunction, Img, OffthreadVideo, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, CalculateMetadataFunction, Img, OffthreadVideo, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { z } from 'zod';
 import { TT_SPRINGS, TT_COLORS, TT_FONT } from './tt-shared';
 
@@ -104,9 +104,6 @@ export const TTTopicCard: React.FC<TTTopicCardProps> = ({ text, holdEnd, vignett
 
   return (
     <AbsoluteFill style={{ backgroundColor: 'transparent', overflow: 'hidden' }}>
-
-      {/* ── Music ───────────────────────────────────────────────────────── */}
-      <Audio src={staticFile('introcardfx.mov')} />
 
       {/* ── Animated background ─────────────────────────────────────────── */}
       <OffthreadVideo

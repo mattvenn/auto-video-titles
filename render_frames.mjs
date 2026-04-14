@@ -41,7 +41,10 @@ const bundleDir = await bundle({
   entryPoint: path.resolve(__dirname, 'src/index.ts'),
 });
 
-const compositions = await getCompositions(bundleDir, { inputProps: props });
+// Use system Chrome if REMOTION_CHROME_PATH is set — avoids auto-download on fresh machines.
+const browserExecutable = process.env.REMOTION_CHROME_PATH || undefined;
+
+const compositions = await getCompositions(bundleDir, { inputProps: props, browserExecutable });
 const comp = compositions.find(c => c.id === composition);
 if (!comp) {
   console.error(`Composition '${composition}' not found`);
@@ -55,6 +58,8 @@ await renderFrames({
   outputDir:    outDir,
   inputProps:   props,
   imageFormat:  'png',
+  concurrency:  1,
+  browserExecutable,
   onFrameUpdate: (rendered) => {
     process.stdout.write(`\r  ${rendered}/${comp.durationInFrames}`);
   },
