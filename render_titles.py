@@ -3,11 +3,13 @@
 render_titles.py  —  Render VFD lower-third cards and optionally insert into DaVinci Resolve.
 
 Usage:
-    python render_titles.py                    # render all enabled cards
-    python render_titles.py --card drc         # render one card by id
-    python render_titles.py --resolve          # render + insert into current Resolve timeline
+    python render_titles.py                                   # render all enabled cards
+    python render_titles.py --card drc                        # render one card by id
+    python render_titles.py --composition TTTopicCard         # render only TTTopicCard cards across all parts
+    python render_titles.py --all-configs                     # run across all part*.toml files
+    python render_titles.py --resolve                         # render + insert into current Resolve timeline
     python render_titles.py --resolve --card drc
-    python render_titles.py --place            # place clips already in the 'remotion' bin
+    python render_titles.py --place                           # place clips already in the 'remotion' bin
 
 Requirements:
     Python 3.11+  (uses built-in tomllib)
@@ -16,6 +18,7 @@ Requirements:
 
 DaVinci Resolve scripting:
     Resolve must be running. The scripting module path varies by OS:
+      Linux:   /opt/resolve/Developer/Scripting/Modules
       macOS:   /Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Scripting/Modules
       Windows: C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Support\\Developer\\Scripting\\Modules
     Add that path to PYTHONPATH, or set RESOLVE_SCRIPT_API / RESOLVE_SCRIPT_LIB env vars.
@@ -112,6 +115,7 @@ def render_card(card: dict, config: dict, out_dir: Path) -> Path:
 def get_resolve():
     """Return the Resolve scripting object, or exit with a clear message."""
     resolve_module_paths = [
+        "/opt/resolve/Developer/Scripting/Modules",
         "/Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Scripting/Modules",
         r"C:\ProgramData\Blackmagic Design\DaVinci Resolve\Support\Developer\Scripting\Modules",
     ]
@@ -301,12 +305,36 @@ def place_from_bin(cards: list[dict], config: dict):
 
 def main():
     parser = argparse.ArgumentParser(description="Render VFD title cards via Remotion")
-    parser.add_argument("--config",     default="part1.toml", help="Path to the titles TOML file (e.g. part1.toml, part2.toml)")
-    parser.add_argument("--card",       default=None,          help="Render only this card id")
-    parser.add_argument("--resolve",    action="store_true",   help="Import clips into Resolve media pool and insert into timeline")
-    parser.add_argument("--place",      action="store_true",   help="Place clips already in the 'remotion' bin onto the active timeline")
-    parser.add_argument("--no-render",  action="store_true",   help="Skip rendering; use existing files in output_dir")
+    parser.add_argument("--config",      default="part1.toml", help="Path to the titles TOML file (e.g. part1.toml, part2.toml)")
+    parser.add_argument("--all-configs", action="store_true",   help="Run across all part*.toml files in the current directory")
+    parser.add_argument("--card",        default=None,          help="Render only this card id")
+    parser.add_argument("--composition", default=None,          help="Render only cards that use this composition (e.g. TTTopicCard)")
+    parser.add_argument("--resolve",     action="store_true",   help="Import clips into Resolve media pool and insert into timeline")
+    parser.add_argument("--place",       action="store_true",   help="Place clips already in the 'remotion' bin onto the active timeline")
+    parser.add_argument("--no-render",   action="store_true",   help="Skip rendering; use existing files in output_dir")
     args = parser.parse_args()
+
+    if args.all_configs:
+        configs = sorted(Path(".").glob("part*.toml"))
+        if not configs:
+            print("ERROR: no part*.toml files found in current directory")
+            sys.exit(1)
+        print(f"Running across {len(configs)} config(s): {[str(c) for c in configs]}\n")
+        for cfg in configs:
+            print(f"{'─' * 60}")
+            print(f"Config: {cfg}")
+            print(f"{'─' * 60}")
+            # Re-invoke with this config, forwarding all other flags
+            extra = []
+            if args.composition: extra += ["--composition", args.composition]
+            if args.card:        extra += ["--card", args.card]
+            if args.resolve:     extra.append("--resolve")
+            if args.place:       extra.append("--place")
+            if args.no_render:   extra.append("--no-render")
+            result = subprocess.run([sys.executable, __file__, "--config", str(cfg)] + extra)
+            if result.returncode != 0:
+                sys.exit(result.returncode)
+        return
 
     config_path = Path(args.config)
     if not config_path.exists():
@@ -319,13 +347,18 @@ def main():
     config = data["config"]
     all_cards: list[dict] = data.get("cards", [])
 
-    # Filter: enabled + optional single-card selection
+    # Filter: enabled + optional single-card / composition selection
     cards = [c for c in all_cards if c.get("enabled", True)]
     if args.card:
         cards = [c for c in cards if c["id"] == args.card]
         if not cards:
             ids = [c["id"] for c in all_cards]
             print(f"ERROR: card '{args.card}' not found. Available: {ids}")
+            sys.exit(1)
+    if args.composition:
+        cards = [c for c in cards if c.get("composition", config["composition"]) == args.composition]
+        if not cards:
+            print(f"ERROR: no enabled cards found with composition '{args.composition}'")
             sys.exit(1)
 
     out_dir = Path(config["output_dir"])
