@@ -12,6 +12,7 @@ import {
   OffthreadVideo,
 } from 'remotion';
 import { z } from 'zod';
+import { BACKGROUND_VIDEOS } from './video-list';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const CONFIG = {
@@ -82,7 +83,10 @@ export const z2ATitleBarV2Schema = z.object({
   highlightIntensity: z.number().int().min(0).max(100),
   // Intro background — renders the Z2AIntro video+logo layers behind the title bar
   showIntroBackground:  z.boolean(),
+  introBackgroundVideo: z.enum(BACKGROUND_VIDEOS).default('microchip-background-h264.mp4'),
+  introBackgroundZoom:  z.number().min(100).max(400).default(120),
   introVideoStartFrom:  z.number().int().min(0).max(3000),
+  introVideoSpeed:      z.number().int().min(-100).max(100).default(0),
 });
 
 export type Z2ATitleBarV2Props = z.infer<typeof z2ATitleBarV2Schema>;
@@ -113,7 +117,10 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
   highlightLength,
   highlightIntensity,
   showIntroBackground,
+  introBackgroundVideo,
+  introBackgroundZoom,
   introVideoStartFrom,
+  introVideoSpeed,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -241,14 +248,15 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
       {showIntroBackground && (
         <div style={{ position: 'absolute', inset: 0 }}>
           <OffthreadVideo
-            src={staticFile('microchip-background-h264.mp4')}
+            src={staticFile(introBackgroundVideo)}
             startFrom={introVideoStartFrom}
+            playbackRate={1 + (introVideoSpeed / 100) * 0.2}
             delayRenderTimeoutInMilliseconds={60000}
             style={{
               width:           '100%',
               height:          '100%',
               objectFit:       'cover',
-              transform:       'scale(1.2)',
+              transform:       `scale(${introBackgroundZoom / 100})`,
               transformOrigin: 'center center',
             }}
           />

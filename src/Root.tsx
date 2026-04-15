@@ -93,7 +93,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"line1":"Zero to ASIC course","line2":"An introduction to analog microelectronics","holdFrames":79,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showIntroBackground":true,"introVideoStartFrom":0}}
+        defaultProps={{"line1":"SAR ADC","line2":"Carsten Wulff on TT08","holdFrames":79,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showIntroBackground":false,"introBackgroundVideo":"sine2.mp4" as const,"introBackgroundZoom":120,"introVideoStartFrom":0,"introVideoSpeed":0}}
       />
       <Composition
         id="Z2ALogoAnim"
