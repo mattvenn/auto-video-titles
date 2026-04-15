@@ -2,6 +2,7 @@ import React from 'react';
 import { AbsoluteFill, CalculateMetadataFunction, Img, OffthreadVideo, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { z } from 'zod';
 import { TT_SPRINGS, TT_COLORS, TT_FONT } from './tt-shared';
+import { BACKGROUND_VIDEOS } from './video-list';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const CONFIG = {
@@ -35,6 +36,12 @@ export const ttTopicCardSchema = z.object({
   text:             z.string(),
   holdEnd:          z.number().int().min(1),
   vignetteStrength: z.number().int().min(0).max(100),
+  backgroundVideo:     z.enum(BACKGROUND_VIDEOS).default('sine2.mp4'),
+  backgroundZoom:      z.number().min(100).max(400).default(100),
+  videoStartFrom:      z.number().int().min(0).max(3000).default(0),
+  videoSpeed:          z.number().int().min(-100).max(100).default(0),
+  stripOpacity:        z.number().int().min(0).max(100).default(100),
+  textColor:           z.enum(['#FFFFFF', '#F5E642', '#FF6B9D', '#4DD9FF', '#B8F0C8', '#FFB347', '#040371']).default('#FFFFFF'),
 });
 
 export type TTTopicCardProps = z.infer<typeof ttTopicCardSchema>;
@@ -45,7 +52,7 @@ export const calculateMetadata: CalculateMetadataFunction<TTTopicCardProps> = ({
   durationInFrames: props.holdEnd + CONFIG.exitSlideFrames + CONFIG.exitPopFrames,
 });
 
-export const TTTopicCard: React.FC<TTTopicCardProps> = ({ text, holdEnd, vignetteStrength }) => {
+export const TTTopicCard: React.FC<TTTopicCardProps> = ({ text, holdEnd, vignetteStrength, backgroundVideo, backgroundZoom, videoStartFrom, videoSpeed, stripOpacity, textColor }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -107,9 +114,17 @@ export const TTTopicCard: React.FC<TTTopicCardProps> = ({ text, holdEnd, vignett
 
       {/* ── Animated background ─────────────────────────────────────────── */}
       <OffthreadVideo
-        src={staticFile('tt_card_background.mp4')}
+        src={staticFile(backgroundVideo)}
+        startFrom={videoStartFrom}
+        playbackRate={1 + (videoSpeed / 100) * 0.2}
         delayRenderTimeoutInMilliseconds={60000}
-        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          transform: `scale(${backgroundZoom / 100})`,
+          transformOrigin: 'center center',
+        }}
       />
 
       {/* ── Vignette overlay ────────────────────────────────────────────── */}
@@ -139,7 +154,7 @@ export const TTTopicCard: React.FC<TTTopicCardProps> = ({ text, holdEnd, vignett
             left:            0,
             width:           Math.max(0, logoX),
             height:          CONFIG.stripH,
-            backgroundColor: CONFIG.stripColor,
+            backgroundColor: `rgba(0,0,0,${stripOpacity / 100})`,
             boxShadow:       '0 6px 24px rgba(0,0,0,0.32), 0 2px 6px rgba(0,0,0,0.18)',
             overflow:        'hidden',
           }}
@@ -157,7 +172,7 @@ export const TTTopicCard: React.FC<TTTopicCardProps> = ({ text, holdEnd, vignett
               fontFamily: CONFIG.fontFamily,
               fontWeight: 800,
               fontSize:   fontSize,
-              color:      CONFIG.textColor,
+              color:      textColor,
               whiteSpace: 'nowrap',
             }}>
               {text}

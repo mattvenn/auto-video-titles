@@ -73,7 +73,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"text":"Test Textcdfdddddd dabcd","holdEnd":85,"vignetteStrength":83}}
+        defaultProps={{"text":"Talking to the Outside World","holdEnd":85,"vignetteStrength":59,"backgroundVideo":"gf180_wafer.mov" as const,"backgroundZoom":133,"videoStartFrom":37,"videoSpeed":-100,"stripOpacity":86,"textColor":"#FF6B9D" as const}}
       />
       <Composition
         id="Z2ATitleBar"

@@ -1,11 +1,14 @@
 COMPOSITIONS := LowerThirdVFD LowerThirdCallToAction TTLowerThird TTCallToAction TTTopicCard Z2ATitleBar Z2ATitleBarV2 Z2ALogoAnim Z2AIntro Z2AIntroLogoExpand
 
-.PHONY: render-all render-card studio clean
+.PHONY: render-all render-card studio clean gen-video-list
 
-studio:
+gen-video-list:
+	node scripts/gen-video-list.mjs
+
+studio: gen-video-list
 	npx remotion studio
 
-render-all:
+render-all: gen-video-list
 	mkdir -p out
 	$(foreach comp,$(COMPOSITIONS),npx remotion render src/index.ts $(comp) out/$(comp).mov --codec=prores --prores-profile=4444;)
 
