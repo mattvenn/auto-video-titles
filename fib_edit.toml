@@ -1,0 +1,39 @@
+# FIB (Focused Ion Beam) edit — callout labels
+#
+# timecode: HH:MM:SS.mmm  (matches SRT source timestamps)
+# cx/cy: offset from screen centre (960, 540) in pixels — positive = right/down
+
+[config]
+output_dir      = "out/fib_edit"
+composition     = "Z2ACallout"
+timeline_offset = "00:00:00.000"
+
+# ── Callout labels ────────────────────────────────────────────────────────────
+
+[[cards]]
+id          = "ion_column"
+composition = "Z2ACallout"
+text        = "Ion column"
+cx          = 0
+cy          = 0
+angle       = 225
+line_length = 120
+hold_frames = 40
+circle_size = 127
+pill_height = 90
+invert      = true
+timecode    = "00:00:01.000"
+
+[[cards]]
+id          = "electron_column"
+composition = "Z2ACallout"
+text        = "Electron column"
+cx          = 0
+cy          = 0
+angle       = 45
+line_length = 120
+hold_frames = 40
+circle_size = 127
+pill_height = 90
+invert      = true
+timecode    = "00:00:01.000"
