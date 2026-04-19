@@ -73,7 +73,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"text":"Talking to the Outside World","holdEnd":85,"vignetteStrength":59,"backgroundVideo":"gf180_wafer.mov" as const,"backgroundZoom":133,"videoStartFrom":37,"videoSpeed":-100,"stripOpacity":86,"textColor":"#FF6B9D" as const}}
+        defaultProps={{"text":"Talking to the Outside World","holdEnd":85,"vignetteStrength":59,"backgroundVideo":"microchip-background-h264.mp4" as const,"backgroundZoom":133,"videoStartFrom":37,"videoSpeed":-100,"stripOpacity":86,"textColor":"#FF6B9D" as const}}
       />
       <Composition
         id="Z2ATitleBar"
@@ -93,7 +93,7 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={{"line1":"SAR ADC","line2":"Carsten Wulff on TT08","holdFrames":79,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showIntroBackground":false,"introBackgroundVideo":"sine2.mp4" as const,"introBackgroundZoom":120,"introVideoStartFrom":0,"introVideoSpeed":0}}
+        defaultProps={{"line1":"SAR ADC","line2":"Carsten Wulff on TT08","holdFrames":79,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showIntroBackground":true,"introBackgroundVideo":"sine.mp4" as const,"introBackgroundZoom":120,"introVideoStartFrom":0,"introVideoSpeed":0}}
       />
       <Composition
         id="Z2ALogoAnim"
