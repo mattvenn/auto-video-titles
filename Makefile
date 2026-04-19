@@ -1,4 +1,4 @@
-COMPOSITIONS := LowerThirdVFD LowerThirdCallToAction TTLowerThird TTCallToAction TTTopicCard Z2ATitleBar Z2ATitleBarV2 Z2ACallToAction Z2ACallout Z2ALogoAnim Z2AIntro Z2AIntroLogoExpand
+COMPOSITIONS := LowerThirdVFD LowerThirdCallToAction TTLowerThird TTCallToAction TTTopicCard Z2ATitleBar Z2ATitleBarV2 Z2ACallToAction Z2ACallout Z2ALogoAnim Z2AIntro Z2AIntroLogoExpand Z2AScaleBar
 
 .PHONY: render-all render-card studio clean gen-video-list
 

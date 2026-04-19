@@ -37,3 +37,22 @@ circle_size = 127
 pill_height = 90
 invert      = true
 timecode    = "00:00:01.000"
+
+[[cards]]
+id          = "scale_bar"
+composition = "Z2AScaleBar"
+timecode    = "00:00:01.000"
+
+[[cards]]
+id          = "target_wire"
+composition = "Z2ACallout"
+text        = "Cut here!"
+cx          = 0
+cy          = 0
+angle       = 45
+line_length = 120
+hold_frames = 40
+circle_size = 127
+pill_height = 90
+invert      = true
+timecode    = "00:00:01.000"

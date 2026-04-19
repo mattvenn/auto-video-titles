@@ -12,6 +12,7 @@ import { Z2AIntro, Z2AIntroProps, z2AIntroSchema, calculateMetadata as calcZ2AIn
 import { Z2AIntroLogoExpand, Z2AIntroLogoExpandProps, z2AIntroLogoExpandSchema, calculateMetadata as calcZ2AIntroLogoExpand } from './compositions/Z2AIntroLogoExpand';
 import { Z2ACallToAction, Z2ACallToActionProps, z2ACallToActionSchema, calculateMetadata as calcZ2ACallToAction } from './compositions/Z2ACallToAction';
 import { Z2ACallout, Z2ACalloutProps, z2ACalloutSchema, calculateMetadata as calcZ2ACallout } from './compositions/Z2ACallout';
+import { Z2AScaleBar, Z2AScaleBarProps, z2AScaleBarSchema, calculateMetadata as calcZ2AScaleBar } from './compositions/Z2AScaleBar';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -116,6 +117,16 @@ export const RemotionRoot: React.FC = () => {
         width={1920}
         height={1080}
         defaultProps={{"text":"Ion column","cx":0,"cy":0,"angle":219,"lineLength":69,"holdFrames":30,"circleSize":127,"pillHeight":90,"invert":false}}
+      />
+      <Composition
+        id="Z2AScaleBar"
+        component={Z2AScaleBar}
+        calculateMetadata={calcZ2AScaleBar as CalculateMetadataFunction<Z2AScaleBarProps>}
+        schema={z2AScaleBarSchema}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{"barThickness":16}}
       />
       <Composition
         id="Z2ALogoAnim"
