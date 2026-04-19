@@ -11,6 +11,7 @@ import { Z2ALogoAnim, z2ALogoAnimSchema } from './compositions/Z2ALogoAnim';
 import { Z2AIntro, Z2AIntroProps, z2AIntroSchema, calculateMetadata as calcZ2AIntro } from './compositions/Z2AIntro';
 import { Z2AIntroLogoExpand, Z2AIntroLogoExpandProps, z2AIntroLogoExpandSchema, calculateMetadata as calcZ2AIntroLogoExpand } from './compositions/Z2AIntroLogoExpand';
 import { Z2ACallToAction, Z2ACallToActionProps, z2ACallToActionSchema, calculateMetadata as calcZ2ACallToAction } from './compositions/Z2ACallToAction';
+import { Z2ACallout, Z2ACalloutProps, z2ACalloutSchema, calculateMetadata as calcZ2ACallout } from './compositions/Z2ACallout';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -105,6 +106,16 @@ export const RemotionRoot: React.FC = () => {
         width={1920}
         height={1080}
         defaultProps={{"header":"Zero to ASIC Course","line1":"zerotoasiccourse.com","line2":"Link in description","holdFrames":120,"exitStyle":"drop" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showBackground":false,"backgroundVideo":"microchip-background-h264.mp4" as const,"backgroundZoom":120,"videoStartFrom":0,"videoSpeed":0}}
+      />
+      <Composition
+        id="Z2ACallout"
+        component={Z2ACallout}
+        calculateMetadata={calcZ2ACallout as CalculateMetadataFunction<Z2ACalloutProps>}
+        schema={z2ACalloutSchema}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{"text":"Ion column","cx":0,"cy":0,"angle":219,"lineLength":69,"holdFrames":30,"circleSize":127,"pillHeight":90,"invert":false}}
       />
       <Composition
         id="Z2ALogoAnim"
