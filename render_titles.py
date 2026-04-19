@@ -70,6 +70,13 @@ def timecode_to_frames(tc: str, fps: int) -> int:
         return whole_seconds * fps
 
 
+_METADATA_KEYS = {"id", "composition", "timecode", "section", "enabled"}
+
+def _snake_to_camel(s: str) -> str:
+    parts = s.split("_")
+    return parts[0] + "".join(p.capitalize() for p in parts[1:])
+
+
 def render_card(card: dict, config: dict, out_dir: Path) -> Path:
     """Delegate rendering to the Makefile render-card target. Returns the output path."""
     card_id  = card["id"]
@@ -82,13 +89,19 @@ def render_card(card: dict, config: dict, out_dir: Path) -> Path:
 
     composition = card.get("composition", config["composition"])
 
-    # Build props from whichever fields the card defines
+    # Legacy explicit mappings (kept for backward compat with older compositions)
     props: dict = {}
-    for key in ("extra_text", "title", "header", "line1", "line2", "text", "vignetteStrength"):
-        if key in card:
-            props[key] = card[key]
     if "hold_frames" in card:
         props["holdEnd"] = card["hold_frames"]
+
+    # Generic pass-through: all non-metadata keys, snake_case → camelCase.
+    # Does not overwrite explicit mappings above.
+    for key, val in card.items():
+        if key in _METADATA_KEYS:
+            continue
+        camel = _snake_to_camel(key)
+        if camel not in props:
+            props[camel] = val
 
     # Write props to a temp file so make doesn't have to deal with JSON quoting
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
