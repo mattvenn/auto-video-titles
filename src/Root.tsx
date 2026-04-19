@@ -10,6 +10,7 @@ import { Z2ATitleBarV2, Z2ATitleBarV2Props, z2ATitleBarV2Schema, calculateMetada
 import { Z2ALogoAnim, z2ALogoAnimSchema } from './compositions/Z2ALogoAnim';
 import { Z2AIntro, Z2AIntroProps, z2AIntroSchema, calculateMetadata as calcZ2AIntro } from './compositions/Z2AIntro';
 import { Z2AIntroLogoExpand, Z2AIntroLogoExpandProps, z2AIntroLogoExpandSchema, calculateMetadata as calcZ2AIntroLogoExpand } from './compositions/Z2AIntroLogoExpand';
+import { Z2ACallToAction, Z2ACallToActionProps, z2ACallToActionSchema, calculateMetadata as calcZ2ACallToAction } from './compositions/Z2ACallToAction';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -94,6 +95,16 @@ export const RemotionRoot: React.FC = () => {
         width={1920}
         height={1080}
         defaultProps={{"line1":"SAR ADC","line2":"Carsten Wulff on TT08","holdFrames":79,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showIntroBackground":true,"introBackgroundVideo":"sine.mp4" as const,"introBackgroundZoom":120,"introVideoStartFrom":0,"introVideoSpeed":0}}
+      />
+      <Composition
+        id="Z2ACallToAction"
+        component={Z2ACallToAction}
+        calculateMetadata={calcZ2ACallToAction as CalculateMetadataFunction<Z2ACallToActionProps>}
+        schema={z2ACallToActionSchema}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{"header":"Zero to ASIC Course","line1":"zerotoasiccourse.com","line2":"Link in description","holdFrames":120,"exitStyle":"drop" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showBackground":false,"backgroundVideo":"microchip-background-h264.mp4" as const,"backgroundZoom":120,"videoStartFrom":0,"videoSpeed":0}}
       />
       <Composition
         id="Z2ALogoAnim"
