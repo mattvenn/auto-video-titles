@@ -21,7 +21,7 @@ export const RemotionRoot: React.FC = () => {
         id="LowerThirdVFD"
         component={LowerThirdVFD}
         schema={lowerThirdVFDSchema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{
@@ -29,14 +29,14 @@ export const RemotionRoot: React.FC = () => {
           line2: 'Matt Venn',
         }}
         calculateMetadata={({ props }: { props: LowerThirdVFDProps }) => ({
-          durationInFrames: getDuration(props.line1, props.line2, 30),
+          durationInFrames: getDuration(props.line1, props.line2, 24),
         })}
       />
       <Composition
         id="LowerThirdCallToAction"
         component={LowerThirdCallToAction}
         schema={lowerThirdCallToActionSchema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{
@@ -45,7 +45,7 @@ export const RemotionRoot: React.FC = () => {
           line2:  'Link in description',
         }}
         calculateMetadata={({ props }: { props: LowerThirdCallToActionProps }) => ({
-          durationInFrames: getCtaDuration(props.header, props.line1, props.line2, 30),
+          durationInFrames: getCtaDuration(props.header, props.line1, props.line2, 24),
         })}
       />
       <Composition
@@ -53,7 +53,7 @@ export const RemotionRoot: React.FC = () => {
         component={TTLowerThird}
         calculateMetadata={calcTTLowerThird as CalculateMetadataFunction<TTLowerThirdProps>}
         schema={ttLowerThirdSchema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{"title":"Commander app","extra_text":"","holdEnd":77}}
@@ -63,7 +63,7 @@ export const RemotionRoot: React.FC = () => {
         component={TTCallToAction}
         calculateMetadata={calcTTCallToAction as CalculateMetadataFunction<TTCallToActionProps>}
         schema={ttCallToActionSchema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{"header":"Try Tin","line1":"tinytapeout.com","line2":"Link in description","holdEnd":100}}
@@ -73,7 +73,7 @@ export const RemotionRoot: React.FC = () => {
         component={TTTopicCard}
         calculateMetadata={calcTTTopicCard as CalculateMetadataFunction<TTTopicCardProps>}
         schema={ttTopicCardSchema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{"text":"Talking to the Outside World","holdEnd":85,"vignetteStrength":59,"backgroundVideo":"microchip-background-h264.mp4" as const,"backgroundZoom":133,"videoStartFrom":37,"videoSpeed":-100,"stripOpacity":86,"textColor":"#FF6B9D" as const}}
@@ -83,7 +83,7 @@ export const RemotionRoot: React.FC = () => {
         component={Z2ATitleBar}
         calculateMetadata={calcZ2ATitleBar as CalculateMetadataFunction<Z2ATitleBarProps>}
         schema={z2ATitleBarSchema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{"line1":"Zero to ASIC course","line2":"An introduction to analog microelectronics","holdFrames":10,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15}}
@@ -93,7 +93,7 @@ export const RemotionRoot: React.FC = () => {
         component={Z2ATitleBarV2}
         calculateMetadata={calcZ2ATitleBarV2 as CalculateMetadataFunction<Z2ATitleBarV2Props>}
         schema={z2ATitleBarV2Schema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{"line1":"SAR ADC","line2":"Carsten Wulff on TT08","holdFrames":79,"exitStyle":"fade" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showIntroBackground":true,"introBackgroundVideo":"sine.mp4" as const,"introBackgroundZoom":120,"introVideoStartFrom":0,"introVideoSpeed":0}}
@@ -103,7 +103,7 @@ export const RemotionRoot: React.FC = () => {
         component={Z2ACallToAction}
         calculateMetadata={calcZ2ACallToAction as CalculateMetadataFunction<Z2ACallToActionProps>}
         schema={z2ACallToActionSchema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{"header":"Zero to ASIC Course","line1":"zerotoasiccourse.com","line2":"Link in description","holdFrames":120,"exitStyle":"drop" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showBackground":false,"backgroundVideo":"microchip-background-h264.mp4" as const,"backgroundZoom":120,"videoStartFrom":0,"videoSpeed":0}}
@@ -113,7 +113,7 @@ export const RemotionRoot: React.FC = () => {
         component={Z2ACallout}
         calculateMetadata={calcZ2ACallout as CalculateMetadataFunction<Z2ACalloutProps>}
         schema={z2ACalloutSchema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{"text":"Ion column","cx":0,"cy":0,"angle":219,"lineLength":69,"holdFrames":30,"circleSize":127,"pillHeight":90,"invert":false}}
@@ -123,7 +123,7 @@ export const RemotionRoot: React.FC = () => {
         component={Z2AScaleBar}
         calculateMetadata={calcZ2AScaleBar as CalculateMetadataFunction<Z2AScaleBarProps>}
         schema={z2AScaleBarSchema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{"barThickness":16}}
@@ -133,7 +133,7 @@ export const RemotionRoot: React.FC = () => {
         component={Z2ALogoAnim}
         schema={z2ALogoAnimSchema}
         durationInFrames={88}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{"size":400,"cx":850,"cy":400,"blend":"cutout" as const}}
@@ -143,7 +143,7 @@ export const RemotionRoot: React.FC = () => {
         component={Z2AIntro}
         calculateMetadata={calcZ2AIntro as CalculateMetadataFunction<Z2AIntroProps>}
         schema={z2AIntroSchema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{"holdFrames":30,"bgHoldFrames":0,"videoStartFrom":78}}
@@ -153,7 +153,7 @@ export const RemotionRoot: React.FC = () => {
         component={Z2AIntroLogoExpand}
         calculateMetadata={calcZ2AIntroLogoExpand as CalculateMetadataFunction<Z2AIntroLogoExpandProps>}
         schema={z2AIntroLogoExpandSchema}
-        fps={30}
+        fps={24}
         width={1920}
         height={1080}
         defaultProps={{"holdFrames":20,"logoFadeDuration":8,"bgFadeDuration":17,"bgFadeDelay":-2,"videoStartFrom":78}}

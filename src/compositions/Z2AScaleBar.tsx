@@ -27,15 +27,15 @@ export type Z2AScaleBarProps = z.infer<typeof z2AScaleBarSchema>;
 // holdFrames : extra hold on the last level (comp frames, not video frames)
 
 const VIDEO_FPS = 24;
-const COMP_FPS  = 30;
-const START_TC  = [4, 17] as const;  // timecode when the scale bar first appears
+const COMP_FPS  = 24;
+const START_TC  = [0, 0] as const;  // timecode when the scale bar first appears
 
 const LEVELS = [
-  { value: 100,  label: '100 mm',  zoomStart: [5, 11] as const, zoomEnd: [6, 22] as const  },
-  { value: 5,   label: '5 mm',   zoomStart: [7, 16] as const, zoomEnd: [9, 14] as const  },
-  { value: 1,    label: '1000 μm', zoomStart: [11, 1] as const, zoomEnd: [12, 23] as const },
-  { value: 0.2,  label: '200 μm',  zoomStart: [13, 17] as const, zoomEnd: [15, 13] as const  },
-  { value: 0.1,  label: '100 μm',  holdFrames: 60 },
+  { value: 100,  label: '100 mm',  zoomStart: [0, 18] as const, zoomEnd: [2, 13] as const  },
+  { value: 5,   label: '5 mm',   zoomStart: [2, 23] as const, zoomEnd: [4, 21] as const  },  
+  { value: 1,    label: '500 μm', zoomStart: [6, 2] as const, zoomEnd: [8, 4] as const },
+  { value: 0.2,  label: '100 μm',  zoomStart: [8, 12] as const, zoomEnd: [10, 7] as const  },
+  { value: 0.1,  label: '10 μm',  holdFrames: 120 },
 ];
 
 // ── Phase durations derived from LEVELS ───────────────────────────────────────
