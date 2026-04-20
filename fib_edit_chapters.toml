@@ -13,7 +13,7 @@ timecode    = "01:00:16.00"
 [[cards]]
 id          = "electron_microscope_tour"
 title       = "Mikhail"
-extra_text  = "And his microscope"
+extra_text  = "Zeptobars.com"
 timecode    = "01:01:30.100"
 
 [[cards]]
