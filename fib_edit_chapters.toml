@@ -1,0 +1,114 @@
+# fib edit
+
+[config]
+output_dir      = "out/fib_edit"
+composition     = "Z2ATitleBarV2"
+timeline_offset = "00:00:00.000"
+
+[[cards]]
+id          = "intro"
+composition = "Z2AIntroLogoExpand"
+timecode    = "01:00:16.00"
+
+[[cards]]
+id          = "electron_microscope_tour"
+title       = "Mikhail"
+extra_text  = "And his microscope"
+timecode    = "01:01:30.100"
+
+[[cards]]
+id          = "going_inside"
+title       = "Going inside"
+extra_text  = ""
+timecode    = "01:03:05.567"
+
+[[cards]]
+id          = "chip_under_test"
+title       = "Chip under Test"
+extra_text  = "Tiny Tapeout 8"
+timecode    = "01:03:59.133"
+
+[[cards]]
+id          = "getting_better_images"
+title       = "Getting better images"
+extra_text  = "And why it takes longer"
+timecode    = "01:05:09.267"
+
+[[cards]]
+id          = "design_under_test"
+title       = "Design under test"
+extra_text  = "Analog factory test"
+timecode    = "01:05:53.700"
+
+[[cards]]
+id          = "ion_beam_ready"
+title       = "Ion beam ready"
+extra_text  = ""
+timecode    = "01:06:47.167"
+
+[[cards]]
+id          = "finding_the_design"
+title       = "Finding the design"
+extra_text  = ""
+timecode    = "01:07:36.533"
+
+
+[[cards]]
+id          = "setting_up_the_cut"
+title       = "Setting up the cut"
+extra_text  = ""
+timecode    = "01:10:18.700"
+
+[[cards]]
+id          = "starting_the_cut"
+title       = "Starting the cut"
+extra_text  = ""
+timecode    = "01:11:40.767"
+
+
+[[cards]]
+id          = "moment_of_failure"
+title       = "Moment of failure"
+extra_text  = ""
+timecode    = "01:14:16.133"
+
+[[cards]]
+id          = "reconnection"
+title       = "Reconnection"
+extra_text  = ""
+timecode    = "01:14:30.667"
+
+[[cards]]
+id          = "ion_needle_in_place"
+title       = "Needle in place"
+extra_text  = ""
+timecode    = "01:16:24.667"
+
+[[cards]]
+id          = "opening_the_flow"
+title       = "Opening the flow"
+extra_text  = ""
+timecode    = "01:17:25.567"
+
+[[cards]]
+id          = "2_ways_to_deposit"
+title       = "2 ways to deposit"
+extra_text  = ""
+timecode    = "01:18:13.533"
+
+[[cards]]
+id          = "voltage_is_rising"
+title       = "Voltage is rising"
+extra_text  = ""
+timecode    = "01:18:47.367"
+
+[[cards]]
+id          = "wrapping_up"
+title       = "Wrapping up"
+extra_text  = ""
+timecode    = "01:19:21.200"
+
+[[cards]]
+id          = "outro"
+composition = "Z2AIntro"
+timecode    = "01:19:56.070"
