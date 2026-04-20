@@ -56,7 +56,7 @@ const CONFIG = {
   collapseDelay:  3,
   collapseFrames: 9,
   fadeFrames:    15,
-  dropFrames:    22,
+  dropFrames:    14,
   dropDistance: 700,
 
   // Spring parameters

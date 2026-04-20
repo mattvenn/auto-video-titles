@@ -53,7 +53,7 @@ const CONFIG = {
   collapseDelay:  3,
   collapseFrames: 7,
   fadeFrames:    15,
-  dropFrames:    22,
+  dropFrames:    14,
   dropDistance: 700,
 
   // Spring parameters
@@ -87,6 +87,9 @@ export const z2ATitleBarV2Schema = z.object({
   introBackgroundZoom:  z.number().min(100).max(400).default(120),
   introVideoStartFrom:  z.number().int().min(0).max(3000),
   introVideoSpeed:      z.number().int().min(-100).max(100).default(0),
+  // Position offset from screen centre (pixels)
+  offsetX: z.number().default(0),
+  offsetY: z.number().default(0),
 });
 
 export type Z2ATitleBarV2Props = z.infer<typeof z2ATitleBarV2Schema>;
@@ -121,6 +124,8 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
   introBackgroundZoom,
   introVideoStartFrom,
   introVideoSpeed,
+  offsetX = 0,
+  offsetY = 0,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -210,8 +215,8 @@ export const Z2ATitleBarV2: React.FC<Z2ATitleBarV2Props> = ({
   const textExitY = interpolate(textExitFrac, [0, 1], [0, -CONFIG.circleD]);
   const textY = isExit ? textExitY : textEntryY;
 
-  const centerX = CONFIG.screenW / 2;
-  const centerY = CONFIG.screenH / 2;
+  const centerX = CONFIG.screenW / 2 + offsetX;
+  const centerY = CONFIG.screenH / 2 + offsetY;
   const discInnerSize = CONFIG.circleD - discRingThickness * 2 - discWhiteRing * 2;
 
   // ── Sweep highlight ───────────────────────────────────────────────────────

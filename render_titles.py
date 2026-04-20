@@ -72,6 +72,13 @@ def timecode_to_frames(tc: str, fps: int) -> int:
 
 _METADATA_KEYS = {"id", "composition", "timecode", "section", "enabled"}
 
+# Map TOML field names to the prop names each composition actually expects.
+_COMP_FIELD_MAP: dict[str, dict[str, str]] = {
+    "Z2ATitleBar":   {"title": "line1", "extra_text": "line2"},
+    "Z2ATitleBarV2": {"title": "line1", "extra_text": "line2"},
+    "Z2ACallToAction": {"extra_text": "line2"},
+}
+
 def _snake_to_camel(s: str) -> str:
     parts = s.split("_")
     return parts[0] + "".join(p.capitalize() for p in parts[1:])
@@ -95,13 +102,18 @@ def render_card(card: dict, config: dict, out_dir: Path) -> Path:
         props["holdEnd"] = card["hold_frames"]
 
     # Generic pass-through: all non-metadata keys, snake_case → camelCase.
-    # Does not overwrite explicit mappings above.
-    for key, val in card.items():
-        if key in _METADATA_KEYS:
-            continue
-        camel = _snake_to_camel(key)
-        if camel not in props:
-            props[camel] = val
+    # Applies per-composition field renames before camelCase conversion.
+    # Card values take precedence over config defaults; neither overwrites explicit mappings above.
+    field_map = _COMP_FIELD_MAP.get(composition, {})
+    sources = [config.get("defaults", {}), card]   # card wins over defaults
+    for source in sources:
+        for key, val in source.items():
+            if key in _METADATA_KEYS:
+                continue
+            mapped_key = field_map.get(key, key)
+            camel = _snake_to_camel(mapped_key)
+            if camel not in props:
+                props[camel] = val
 
     # Write props to a temp file so make doesn't have to deal with JSON quoting
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:

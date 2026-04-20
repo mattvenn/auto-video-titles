@@ -36,7 +36,7 @@ export const ttTopicCardSchema = z.object({
   text:             z.string(),
   holdEnd:          z.number().int().min(1),
   vignetteStrength: z.number().int().min(0).max(100),
-  backgroundVideo:     z.enum(BACKGROUND_VIDEOS).default('sine.mp4'),
+  backgroundVideo:     z.enum(BACKGROUND_VIDEOS).default('sine2.mp4'),
   backgroundZoom:      z.number().min(100).max(400).default(100),
   videoStartFrom:      z.number().int().min(0).max(3000).default(0),
   videoSpeed:          z.number().int().min(-100).max(100).default(0),
