@@ -56,3 +56,17 @@ circle_size = 127
 pill_height = 90
 invert      = true
 timecode    = "00:00:01.000"
+
+[[cards]]
+id          = "cutting_area"
+composition = "Z2ACallout"
+text        = "Cutting area"
+cx          = 0
+cy          = 0
+angle       = 225 
+line_length = 120
+hold_frames = 40
+circle_size = 127
+pill_height = 90
+invert      = true
+timecode    = "00:08:04.04"

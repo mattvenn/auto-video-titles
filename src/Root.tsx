@@ -106,7 +106,7 @@ export const RemotionRoot: React.FC = () => {
         fps={24}
         width={1920}
         height={1080}
-        defaultProps={{"header":"Zero to ASIC Course","line1":"zerotoasiccourse.com","line2":"Link in description","holdFrames":120,"exitStyle":"drop" as const,"discStartScale":2,"discRingThickness":18,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showBackground":false,"backgroundVideo":"microchip-background-h264.mp4" as const,"backgroundZoom":120,"videoStartFrom":0,"videoSpeed":0}}
+        defaultProps={{"header":"Zero to ASIC Course","line1":"zerotoasiccourse.com","line2":" ","holdFrames":120,"exitStyle":"drop" as const,"discStartScale":2,"discRingThickness":16,"discWhiteRing":15,"highlight":true,"highlightStart":60,"highlightLength":8,"highlightIntensity":20,"showBackground":false,"backgroundVideo":"microchip-background-h264.mp4" as const,"backgroundZoom":120,"videoStartFrom":0,"videoSpeed":0}}
       />
       <Composition
         id="Z2ACallout"

@@ -21,7 +21,7 @@ const CONFIG = {
   screenH: 1080,
 
   // Circle / tablet shape
-  circleD: 216,
+  circleD: 162,
 
   // Entry disc
   discScaleEnd:   10,

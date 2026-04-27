@@ -20,7 +20,7 @@ const CONFIG = {
   screenH: 1080,
 
   // Pill is 50% taller than Z2ATitleBarV2 (216 → 324)
-  circleD: 324,
+  circleD: 243,
 
   // Fixed 90% screen width
   tabletW: Math.round(1920 * 0.9),   // 1728
