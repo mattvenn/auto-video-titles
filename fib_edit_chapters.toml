@@ -17,6 +17,13 @@ title       = "Mikhail"
 extra_text  = "Zeptobars.com"
 timecode    = "01:00:46.000"
 
+[[cards]]
+id          = "tinytapeout8"
+composition = "Z2ACallToAction"
+header       = "Tiny Tapeout 8"
+line1  = "tinytapeout.com/chips/tt08"
+line2  = ""
+timecode    = "01:03:14.11"
 
 [[cards]]
 id          = "getting_better_images"
