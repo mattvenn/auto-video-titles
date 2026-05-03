@@ -284,21 +284,21 @@ export const Z2ACallToAction: React.FC<Z2ACallToActionProps> = ({
             }}
           >
             <div style={{
-              fontFamily: CONFIG.fontFamily, fontWeight: 800,
+              fontFamily: CONFIG.fontFamily, fontWeight: 600,
               fontSize:   CONFIG.headerSize, color: CONFIG.headerColor,
               lineHeight: 1.1, whiteSpace: 'nowrap',
             }}>
               {header}
             </div>
             <div style={{
-              fontFamily: CONFIG.fontFamily, fontWeight: 600,
+              fontFamily: CONFIG.fontFamily, fontWeight: 500,
               fontSize:   CONFIG.line1Size,  color: CONFIG.line1Color,
               lineHeight: 1.2, whiteSpace: 'nowrap', marginTop: CONFIG.lineGap,
             }}>
               {line1}
             </div>
             <div style={{
-              fontFamily: CONFIG.fontFamily, fontWeight: 500,
+              fontFamily: CONFIG.fontFamily, fontWeight: 400,
               fontSize:   CONFIG.line2Size,  color: CONFIG.line2Color,
               lineHeight: 1.2, whiteSpace: 'nowrap', marginTop: CONFIG.lineGap,
             }}>

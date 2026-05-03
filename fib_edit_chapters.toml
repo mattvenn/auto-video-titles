@@ -15,7 +15,7 @@ exit_style = "drop"
 id          = "electron_microscope_tour"
 title       = "Mikhail"
 extra_text  = "Zeptobars.com"
-timecode    = "01:00:46.000"
+timecode    = "01:00:43.06"
 
 [[cards]]
 id          = "tinytapeout8"
@@ -29,13 +29,13 @@ timecode    = "01:03:14.11"
 id          = "getting_better_images"
 title       = "Getting better images"
 extra_text  = "And why it takes longer"
-timecode    = "01:04:25.167"
+timecode    = "01:04:17.08"
 
 [[cards]]
 id          = "design_under_test"
 title       = "Design under test"
 extra_text  = "Analog factory test"
-timecode    = "01:05:09.600"
+timecode    = "01:05:01.22"
 
 [[cards]]
 id          = "zero_to_asic_cta"
@@ -43,23 +43,17 @@ composition = "Z2ACallToAction"
 header       = "Join the Zero to ASIC Course"
 line1  = "ZeroToASICcourse.com"
 line2  = ""
-timecode    = "01:08:09.067"
+timecode    = "01:08:39.12"
 
-
-[[cards]]
-id          = "moment_of_failure"
-title       = "Moment of failure"
-extra_text  = ""
-timecode    = "01:13:52.167"
 
 [[cards]]
 id          = "reconnection"
-title       = "reconnection"
+title       = "Reconnection"
 extra_text  = ""
-timecode    = "01:14:41.400"
+timecode    = "01:14:57.08"
 
 [[cards]]
 id          = "gas_tube_in_place"
 title       = "Gas tube in place"
 extra_text  = ""
-timecode    = "01:16:24.600"
+timecode    = "01:16:39.23"
