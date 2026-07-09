@@ -116,7 +116,7 @@ export const RemotionRoot: React.FC = () => {
         fps={24}
         width={1920}
         height={1080}
-        defaultProps={{"text":"Ion column","cx":0,"cy":0,"angle":219,"lineLength":69,"holdFrames":30,"circleSize":127,"pillHeight":90,"invert":false}}
+        defaultProps={{"text":"Ion beam view","cx":0,"cy":0,"angle":223,"lineLength":69,"holdFrames":30,"circleSize":127,"pillHeight":90,"invert":false}}
       />
       <Composition
         id="Z2AScaleBar"
