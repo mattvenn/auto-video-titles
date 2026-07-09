@@ -11,6 +11,10 @@ timeline_offset = "00:00:00.000"
 # ── Callout labels ────────────────────────────────────────────────────────────
 
 [[cards]]
+id          = "logo_expand"
+composition = "Z2AIntroLogoExpand"
+
+[[cards]]
 id          = "ion_column"
 composition = "Z2ACallout"
 text        = "Ion column"

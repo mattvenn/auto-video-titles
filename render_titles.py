@@ -43,6 +43,11 @@ except ImportError:
         sys.exit(1)
 
 
+# All compositions in src/Root.tsx are registered at this fps. PNG sequences carry no
+# frame-rate metadata, so Resolve defaults freshly-imported clips to the project's
+# timeline fps instead — tag them explicitly or they play back at the wrong speed.
+REMOTION_FPS = 24
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def timecode_to_frames(tc: str, fps: int) -> int:
@@ -207,6 +212,7 @@ def insert_into_resolve(cards: list[dict], config: dict, out_dir: Path):
         png_files = sorted(out_path.glob("*.png"))
         items = media_pool.ImportMedia([str(f.resolve()) for f in png_files])
         if items:
+            items[0].SetClipProperty("FPS", str(REMOTION_FPS))
             frame_counts[card["id"]] = len(png_files)
             print(f"  imported  {card['id']}  → {len(items)} item(s) from {len(png_files)} frames")
             media_items[card["id"]] = items[0]

@@ -56,7 +56,7 @@ export const RemotionRoot: React.FC = () => {
         fps={24}
         width={1920}
         height={1080}
-        defaultProps={{"title":"Commander app","extra_text":"","holdEnd":77}}
+        defaultProps={{"title":"Commander app","extraText":"dfdfdfdfdfd","holdEnd":97}}
       />
       <Composition
         id="TTCallToAction"

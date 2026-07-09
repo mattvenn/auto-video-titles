@@ -1,0 +1,32 @@
+# Tiny Tapeout Lower-Third Title Cards
+# "Part 3 - Welcome to the Fab" — Zero to ASIC Course
+#
+# timecode: HH:MM:SS.mmm  (matches SRT source timestamps)
+
+[config]
+output_dir      = "out/virtualworkshop"
+composition     = "TTLowerThird"
+timeline_offset = "00:00:00.000"
+
+# ── Intro ─────────────────────────────────────────────────────────────────────
+
+[[cards]]
+id         = "intro"
+title      = "Tiny Tapeout Online Workshop"
+extra_text = "The 'Hello World' of chip design"
+timecode   = "01:00:01.21"
+hold_end   = 150
+
+[[cards]]
+id          = "dtu"
+title       = "DTU Workshop"
+extra_text        = "What did you enjoy?"
+timecode    = "01:01:07.00"
+
+[[cards]]
+id          = "cta"
+composition = "TTCallToAction"
+header      = "Register today!"
+line1       = "➡️ tinytapeout.com/online-workshop"
+timecode    = "01:01:22.00"
+hold_frames = 150
