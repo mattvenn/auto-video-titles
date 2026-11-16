@@ -75,6 +75,8 @@ def timecode_to_frames(tc: str, fps: int) -> int:
         return whole_seconds * fps
 
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 _METADATA_KEYS = {"id", "composition", "timecode", "section", "enabled"}
 
 # Map TOML field names to the prop names each composition actually expects.
@@ -92,7 +94,9 @@ def _snake_to_camel(s: str) -> str:
 def render_card(card: dict, config: dict, out_dir: Path) -> Path:
     """Delegate rendering to the Makefile render-card target. Returns the output path."""
     card_id  = card["id"]
-    out_path = out_dir / card_id   # directory of PNG frames
+    # Resolve against the caller's cwd before we hand it to `make`, which we
+    # always run from the repo dir (below) so it can find the Makefile.
+    out_path = (out_dir / card_id).resolve()   # directory of PNG frames
 
     section = card.get("section", "")
     label   = f"[{section}] " if section else ""
@@ -129,6 +133,7 @@ def render_card(card: dict, config: dict, out_dir: Path) -> Path:
         result = subprocess.run(
             ["make", "render-card", f"OUT={out_path}", f"PROPS_FILE={props_file}", f"COMPOSITION={composition}"],
             capture_output=False,
+            cwd=SCRIPT_DIR,
         )
     finally:
         os.unlink(props_file)
